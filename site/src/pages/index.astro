@@ -2,8 +2,7 @@
 import '../styles/global.css';
 
 // Real design port from design/MainLight.dc.html (Terminal/CLI, light mode), first pass.
-// Still open (see README.md "Open items"): Experience section content, resume PDF,
-// Medium blog feed (currently an honest empty state).
+// Still open (see README.md "Open items"): resume PDF.
 
 const name = 'Rahat Ahsan';
 const location = 'Manitoba, Canada';
@@ -50,6 +49,55 @@ const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in pr
 
 const projectsIntro = "What I've learned by building — and now operate day-to-day.";
 const blogIntro = "The writeups behind it — what building and running this stuff actually taught me.";
+const experienceIntro = "The timeline — day job, self-taught pivot, and what I've shipped since.";
+
+const experience = [
+  {
+    title: 'Data Analyst',
+    date: 'early 2024 → present',
+    description:
+      'Track production timelines, budgets, and salary structures for 500+ employees at a manufacturing company; work with databases and Power Query, automating manual processes.',
+  },
+  {
+    title: 'KubeCraft Mentorship',
+    date: 'March 2026 → present',
+    description:
+      'Started learning Linux, Kubernetes, Docker, and cloud infrastructure through KubeCraft, a DevOps mentorship community — the start of the self-taught pivot into infra.',
+  },
+  {
+    title: 'home_lab',
+    date: 'March 2026',
+    description:
+      'Built and deployed a Raspberry Pi k3s cluster — GitOps via Flux, HA Postgres, S3 backups, zero open ports via Cloudflare Tunnel.',
+    href: 'https://github.com/AhsanRahat12/Homelab',
+  },
+  {
+    title: 'Started writing',
+    date: 'March 2026 → present',
+    description: 'Began publishing real production incidents and infrastructure writeups on Medium — 10 posts and counting.',
+    href: 'https://medium.com/@s.rahatahsan',
+  },
+  {
+    title: 'cloud_lab',
+    date: 'June 2026',
+    description:
+      'Designed and deployed a production-grade, multi-tenant GitOps platform on AKS — n8n + PostgreSQL, Flux, Prometheus/Grafana, Telegram alerting.',
+    href: 'https://github.com/AhsanRahat12/Cloudlab',
+  },
+  {
+    title: 'study_app',
+    date: 'July 2026',
+    description:
+      'Shipped an end-to-end DevOps pipeline — containerized dev environment, deployed to Kubernetes, Trivy vulnerability scanning, full CI/CD.',
+    href: 'https://github.com/AhsanRahat12/Study_App',
+  },
+  {
+    title: 'This website',
+    date: 'September 2026',
+    description: 'Started building this site as its own DevOps project — Astro now, Terraform + CI/CD + a guarded chatbot to follow.',
+    href: 'https://github.com/AhsanRahat12/Rahat_Ahsan_Website',
+  },
+];
 
 const socialLinks = [
   { label: 'GITHUB', href: 'https://github.com/AhsanRahat12' },
@@ -214,6 +262,28 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           </div>
         </section>
 
+        <section id="experience" class="content-section">
+          <h2 class="section-label">experience.log</h2>
+          <p class="section-intro">{experienceIntro}</p>
+          <div class="exp-list">
+            {experience.map((e) => (
+              <div class="exp-entry">
+                <div class="exp-title-row">
+                  <span class="exp-title">
+                    {e.href ? (
+                      <a href={e.href} target="_blank" rel="noopener noreferrer">{e.title}</a>
+                    ) : (
+                      e.title
+                    )}
+                  </span>
+                  <span class="exp-date">{e.date}</span>
+                </div>
+                <p class="exp-desc">{e.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <div class="footer" id="contact">
           <div class="footer-row">
             <div class="prompt-box">
@@ -276,12 +346,20 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
       });
 
       // Scrollspy: keep the nav highlight + pwd line honest when the user scrolls
-      // manually instead of using click/type/arrow-key nav.
+      // manually instead of using click/type/arrow-key nav. When two adjacent
+      // sections are simultaneously intersecting (e.g. a short section followed
+      // closely by the footer), prefer whichever comes first in document order
+      // instead of letting the last IntersectionObserver entry win arbitrarily —
+      // otherwise a short section like blog gets its highlight stolen by contact.
+      const intersecting = new Set<string>();
       const scrollObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) setActive(entry.target.id);
+            if (entry.isIntersecting) intersecting.add(entry.target.id);
+            else intersecting.delete(entry.target.id);
           });
+          const current = sections.find((id) => intersecting.has(id));
+          if (current) setActive(current);
         },
         { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
       );
