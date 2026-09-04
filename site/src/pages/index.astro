@@ -45,16 +45,6 @@ const projects = [
   },
 ];
 
-const quotes = [
-  { text: 'The unexamined life is not worth living.', author: 'Socrates' },
-  {
-    text: 'You have power over your mind — not outside events. Realize this, and you will find strength.',
-    author: 'Marcus Aurelius',
-  },
-  { text: 'Men are disturbed not by things, but by the views which they take of things.', author: 'Epictetus' },
-  { text: 'We suffer more in imagination than in reality.', author: 'Seneca' },
-];
-
 const projectsIntro = "What I've learned by building — and now operate day-to-day.";
 const blogIntro = "The writeups behind it — what building and running this stuff actually taught me.";
 const experienceIntro = 'Skills I picked up, and where I put them to work.';
@@ -107,6 +97,7 @@ const socialLinks = [
 const aboutParagraphs = [
   `I spend my days as a Data Analyst turning raw production data — timelines, budgets, salary structures for 500+ employees — into decisions people actually act on. That same instinct for turning raw signal into action pulled me into infrastructure: I've built and run Kubernetes clusters on bare metal and in the cloud, with full observability and alerting that catches problems before they become outages. I've replaced manual deployments with GitOps, wired up CI/CD pipelines with testing and vulnerability scanning baked in, and I write up my production incidents publicly.`,
   `That curiosity didn't come from one place. Environmental Science was my undergrad — physics, chemistry, biology, geology, statistics pulling together — and it's where I first learned how things work together as systems. Day to day, I work with databases and Power Query, automating manual processes wherever I can. It was that combination — systems thinking on one side, the itch to automate on the other — that really sparked my curiosity, and I've been building up my skills to make the jump ever since. With help from KubeCraft, a DevOps mentorship community, I taught myself Kubernetes, Docker, CI/CD, Python, and Linux. Now I'm looking for roles where I get to work hands-on with cloud infrastructure and Kubernetes at scale.`,
+  `When I'm not at the desk learning, I'm usually outside enjoying the sun or reading philosophy.`,
 ];
 
 const aboutTagline = '"From soil samples to CI/CD pipelines."';
@@ -189,12 +180,6 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         <div class="personality-block">
           <div class="status-label">$ now --reading</div>
           <div class="status-static">Five Dialogues — Plato</div>
-          <div class="status-label quote-label">$ fortune</div>
-          <div class="quote-cycle">
-            {quotes.map((q) => (
-              <span>&ldquo;{q.text}&rdquo; <span class="quote-author">— {q.author}</span></span>
-            ))}
-          </div>
         </div>
 
         <div class="prompt-block">
