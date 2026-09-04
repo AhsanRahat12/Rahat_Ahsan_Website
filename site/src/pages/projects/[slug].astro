@@ -1,0 +1,56 @@
+---
+import '../../styles/global.css';
+import { marked } from 'marked';
+import { fetchGithubProjects, fetchProjectReadme, rewriteRelativeLinks } from '../../lib/github';
+import type { Project } from '../../lib/github';
+
+export async function getStaticPaths() {
+  const projects = await fetchGithubProjects();
+
+  return Promise.all(
+    projects.map(async (project) => {
+      const rawReadme = await fetchProjectReadme(project.repo);
+      const readmeHtml = rawReadme ? marked.parse(rewriteRelativeLinks(rawReadme, project.repo, project.branch)) : null;
+      return {
+        params: { slug: project.slug },
+        props: { project, readmeHtml },
+      };
+    })
+  );
+}
+
+const { project, readmeHtml } = Astro.props as { project: Project; readmeHtml: string | null };
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{project.name} — Rahat Ahsan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="readme-page">
+      <a href="/#projects" class="readme-back">&larr; back to projects</a>
+
+      <div class="readme-header">
+        <h1 class="readme-title">{project.name}</h1>
+        <span class="pcard-status">[{project.status}]</span>
+        <a href={project.href} target="_blank" rel="noopener noreferrer" class="readme-github-link">
+          View on GitHub &rarr;
+        </a>
+      </div>
+
+      {readmeHtml ? (
+        <div class="readme-content" set:html={readmeHtml} />
+      ) : (
+        <p class="blog-empty">Couldn't load the README for this project — view it directly on GitHub.</p>
+      )}
+    </div>
+  </body>
+</html>
