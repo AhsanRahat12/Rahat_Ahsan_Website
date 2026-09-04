@@ -15,7 +15,7 @@ const navItems = [
   { id: 'projects', label: '$ cd projects' },
   { id: 'blog', label: '$ cd blog' },
   { id: 'experience', label: '$ cd experience' },
-  { id: 'contact', label: '$ cd contact' },
+  { id: 'certifications', label: '$ cd certifications' },
 ];
 
 const projects = [
@@ -50,6 +50,35 @@ const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in pr
 const projectsIntro = "What I've learned by building — and now operate day-to-day.";
 const blogIntro = "The writeups behind it — what building and running this stuff actually taught me.";
 const experienceIntro = 'Skills I picked up, and where I put them to work.';
+const certificationsIntro = 'AWS in progress — Kubernetes certs and Kubestronaut next.';
+
+const certifications = [
+  {
+    name: 'AWS Solutions Architect Associate (SAA)',
+    status: 'in progress',
+    description: 'Designing available, cost-efficient, fault-tolerant architectures on AWS.',
+  },
+  {
+    name: 'CKA — Certified Kubernetes Administrator',
+    status: 'planned next',
+    description: 'Cluster installation, configuration, and troubleshooting — the operator-facing Kubernetes cert.',
+  },
+  {
+    name: 'CKAD — Certified Kubernetes Application Developer',
+    status: 'planned',
+    description: 'Designing, building, and deploying applications for Kubernetes.',
+  },
+  {
+    name: 'CKS — Certified Kubernetes Security Specialist',
+    status: 'planned',
+    description: 'Securing container-based applications and Kubernetes clusters in production.',
+  },
+  {
+    name: 'Kubestronaut',
+    status: 'planned',
+    description: 'CNCF designation awarded once CKA, CKAD, and CKS are all held.',
+  },
+];
 
 const skills = [
   { name: 'Kubernetes', context: 'bare-metal k3s (home_lab) and AKS (cloud_lab), both GitOps-managed' },
@@ -250,7 +279,23 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           </div>
         </section>
 
-        <div class="footer" id="contact">
+        <section id="certifications" class="content-section">
+          <h2 class="section-label">certifications/</h2>
+          <p class="section-intro">{certificationsIntro}</p>
+          <div class="cert-roadmap">
+            {certifications.map((c) => (
+              <div class="cert-entry">
+                <div class="cert-entry-row">
+                  <span class="cert-entry-name">{c.name}</span>
+                  <span class="cert-entry-status">[{c.status}]</span>
+                </div>
+                <p class="cert-entry-desc">{c.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div class="footer">
           <div class="contact-links">
             {socialLinks.map((link, i) => (
               <>
@@ -272,7 +317,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
     </button>
 
     <script>
-      const sections = ['about', 'projects', 'blog', 'experience', 'contact'];
+      const sections = ['about', 'projects', 'blog', 'experience', 'certifications'];
       const navButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.nav-item'));
       const pwdEl = document.getElementById('pwd')!;
       const input = document.getElementById('cmd-input') as HTMLInputElement;
@@ -311,7 +356,12 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
       // section to register it, which breaks for a short last section (e.g.
       // experience) with little page left below it to scroll into.
       function currentSectionFromScroll(): string {
-        const threshold = window.innerHeight * 0.3;
+        // A section is "current" once its top has scrolled up to this line. Using
+        // the viewport midpoint (rather than a line near the top) keeps the buffer
+        // of extra scroll room needed *after* the last section small — a line near
+        // the top would need far more page height below the last section than a
+        // short trailing footer actually provides.
+        const threshold = window.innerHeight * 0.5;
         let current = sections[0];
         for (const id of sections) {
           const el = document.getElementById(id);

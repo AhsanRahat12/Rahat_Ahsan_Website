@@ -103,6 +103,7 @@ a:hover {
 .main {
   flex: 1;
   padding: 40px 48px;
+  padding-bottom: max(40px, 25vh);
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -319,6 +320,7 @@ a:hover {
 .content-section:nth-of-type(2) { animation-delay: 0.08s; }
 .content-section:nth-of-type(3) { animation-delay: 0.16s; }
 .content-section:nth-of-type(4) { animation-delay: 0.24s; }
+.content-section:nth-of-type(5) { animation-delay: 0.32s; }
 .content-section.dimmed {
   opacity: 0.4;
   transform: scale(0.985);
@@ -479,6 +481,48 @@ a:hover {
   color: var(--ink-2);
   font-size: 11px;
   line-height: 1.4;
+}
+
+/* ---- main: certifications roadmap ------------------------------------------- */
+
+.cert-roadmap {
+  display: flex;
+  flex-direction: column;
+}
+.cert-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.cert-entry:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.cert-entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.cert-entry-name {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+.cert-entry-status {
+  color: var(--accent);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.cert-entry-desc {
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.5;
+  padding-left: 16px;
 }
 
 /* ---- main: footer (contact links) -------------------------------------------- */
