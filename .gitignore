@@ -1,0 +1,4 @@
+design/portrait-source/
+site/node_modules/
+site/dist/
+site/.astro/

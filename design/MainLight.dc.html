@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <style>
+    html, body { margin: 0; padding: 0; }
+    * { box-sizing: border-box; font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    a { color: oklch(40% 0.13 150); text-decoration: none; }
+    a:hover { color: oklch(25% 0.13 150); text-decoration: underline; }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    @keyframes cycleTitle {
+      0% { opacity: 0; }
+      4% { opacity: 1; }
+      21% { opacity: 1; }
+      25% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .cursor { display: inline-block; width: 9px; height: 18px; background: oklch(40% 0.13 150); margin-left: 4px; vertical-align: -3px; animation: blink 1s step-end infinite; }
+    .navline { display: block; padding: 6px 10px; color: oklch(45% 0.02 95); font-size: 13px; white-space: nowrap; }
+    .title-cycle { position: relative; height: 1.3em; width: 320px; }
+    .title-cycle span { position: absolute; left: 0; top: 0; opacity: 0; white-space: nowrap; animation: cycleTitle 8s ease-in-out infinite; color: oklch(35% 0.03 95); font-size: 16px; }
+    .title-cycle span:nth-child(1) { animation-delay: 0s; }
+    .title-cycle span:nth-child(2) { animation-delay: 2s; }
+    .title-cycle span:nth-child(3) { animation-delay: 4s; }
+    .title-cycle span:nth-child(4) { animation-delay: 6s; }
+    @keyframes cycleStatus {
+      0% { opacity: 0; }
+      4% { opacity: 1; }
+      46% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .status-cycle { position: relative; height: 1.2em; width: 230px; }
+    .status-cycle span { position: absolute; left: 0; top: 0; opacity: 0; white-space: nowrap; animation: cycleStatus 8s ease-in-out infinite; color: oklch(40% 0.13 150); font-size: 11px; }
+    .status-cycle span:nth-child(1) { animation-delay: 0s; }
+    .status-cycle span:nth-child(2) { animation-delay: 4s; }
+    .scroller { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+    .scroller::-webkit-scrollbar { height: 6px; }
+    .scroller::-webkit-scrollbar-thumb { background: oklch(75% 0.02 95); }
+    .pcard { flex-shrink: 0; width: 250px; scroll-snap-align: start; border: 1px solid oklch(80% 0.02 95); background: oklch(99% 0.004 95); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  </style>
+</helmet>
+
+<div style="width: 1280px; height: 900px; background: oklch(97% 0.006 95); position: relative; overflow: hidden;">
+  <div style="display: flex; width: 100%; height: 100%;">
+
+    <div style="width: 240px; flex-shrink: 0; background: oklch(94% 0.008 95); border-right: 1px solid oklch(84% 0.01 95); padding: 22px 0; display: flex; flex-direction: column; gap: 18px;">
+      <div style="padding: 0 20px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="color: oklch(55% 0.02 95); font-size: 11px;">$ echo $STATUS</div>
+        <div class="status-cycle">
+          <span>remote / hybrid / in-person</span>
+          <span>open to relocation</span>
+        </div>
+      </div>
+
+      <div style="padding: 0 20px; display: flex; flex-direction: column; gap: 6px;">
+        <span style="color: oklch(55% 0.02 95); font-size: 11px;">$ open portrait.png</span>
+        <div style="width: 100%; height: 120px; border: 1px solid oklch(80% 0.02 95); background: oklch(99% 0.004 95); display: flex; align-items: center; justify-content: center;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="1.4">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+          </svg>
+        </div>
+        <span style="color: oklch(55% 0.02 95); font-size: 10px; text-align: center;">portrait.png</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column;">
+        <sc-for list="{{navItems}}" as="item" hint-placeholder-count="5">
+          <span onClick="{{item.pick}}" style="display: block; padding: 6px 10px; font-size: 13px; white-space: nowrap; cursor: pointer; background: {{item.bg}}; color: {{item.color}}; border-left: {{item.borderLeft}};">{{item.label}}</span>
+        </sc-for>
+      </div>
+
+      <div style="padding: 0 20px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="color: oklch(55% 0.02 95); font-size: 11px;">$ certs --list</div>
+        <div style="color: oklch(35% 0.02 95); font-size: 12px;">&gt; [CERT ONE] <span style="color: oklch(40% 0.13 150);">[OK]</span></div>
+        <div style="color: oklch(35% 0.02 95); font-size: 12px;">&gt; [CERT TWO] <span style="color: oklch(40% 0.13 150);">[OK]</span></div>
+      </div>
+
+    </div>
+
+    <div style="flex: 1; padding: 40px 48px; display: flex; flex-direction: column; gap: 24px; min-width: 0;">
+
+      <div style="border: 1px solid oklch(80% 0.02 95); padding: 26px 32px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="color: oklch(30% 0.13 150); font-size: 32px; font-weight: 700;">&gt;_ [YOUR NAME]</div>
+        <div class="title-cycle">
+          <span>Systems Engineer</span>
+          <span>Site Reliability Engineer</span>
+          <span>Platform Engineer</span>
+          <span>DevOps Engineer</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 6px;">
+          <div style="color: oklch(45% 0.02 95); font-size: 14px;">&gt; /home/{{active}}<span class="cursor"></span></div>
+          <a href="#" style="display: flex; align-items: center; gap: 6px; color: oklch(40% 0.13 150); font-size: 12px; border: 1px solid oklch(40% 0.13 150); padding: 4px 10px; flex-shrink: 0;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"></path></svg>
+            resume.pdf
+          </a>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 8px; color: oklch(45% 0.02 95); font-size: 13px;">
+          <span>$ ls projects/ --scroll</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(45% 0.02 95)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+        </div>
+        <div class="scroller">
+          <div class="pcard">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2"><path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path></svg>
+              <span style="color: oklch(20% 0.01 95); font-size: 14px; font-weight: 700;">home_lab</span>
+            </div>
+            <span style="color: oklch(45% 0.02 95); font-size: 12px; line-height: 1.5;">[one-line description]</span>
+            <span style="color: oklch(40% 0.13 150); font-size: 11px;">[deployed]</span>
+          </div>
+          <div class="pcard">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2"><path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path></svg>
+              <span style="color: oklch(20% 0.01 95); font-size: 14px; font-weight: 700;">cloud_lab</span>
+            </div>
+            <span style="color: oklch(45% 0.02 95); font-size: 12px; line-height: 1.5;">[one-line description]</span>
+            <span style="color: oklch(40% 0.13 150); font-size: 11px;">[deployed]</span>
+          </div>
+          <div class="pcard">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2"><path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path></svg>
+              <span style="color: oklch(20% 0.01 95); font-size: 14px; font-weight: 700;">study_app</span>
+            </div>
+            <span style="color: oklch(45% 0.02 95); font-size: 12px; line-height: 1.5;">[one-line description]</span>
+            <span style="color: oklch(40% 0.13 150); font-size: 11px;">[in progress]</span>
+          </div>
+          <div class="pcard">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2"><path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path></svg>
+              <span style="color: oklch(20% 0.01 95); font-size: 14px; font-weight: 700;">[PROJECT FOUR]</span>
+            </div>
+            <span style="color: oklch(45% 0.02 95); font-size: 12px; line-height: 1.5;">[one-line description]</span>
+            <span style="color: oklch(40% 0.13 150); font-size: 11px;">[in progress]</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0;">
+        <div style="color: oklch(45% 0.02 95); font-size: 13px;">$ tail -n 2 blog/*.md</div>
+        <div style="display: flex; flex-direction: column;">
+          <div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid oklch(84% 0.01 95);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+              <span style="color: oklch(20% 0.01 95); font-size: 13px; font-weight: 700;"><span style="color: oklch(40% 0.13 150);">&gt;</span> [BLOG POST TITLE]</span>
+              <span style="color: oklch(55% 0.02 95); font-size: 11px; flex-shrink: 0;">[DATE]</span>
+            </div>
+            <span style="color: oklch(50% 0.02 95); font-size: 12px; padding-left: 16px;">[one-line excerpt]</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+              <span style="color: oklch(20% 0.01 95); font-size: 13px; font-weight: 700;"><span style="color: oklch(40% 0.13 150);">&gt;</span> [BLOG POST TITLE]</span>
+              <span style="color: oklch(55% 0.02 95); font-size: 11px; flex-shrink: 0;">[DATE]</span>
+            </div>
+            <span style="color: oklch(50% 0.02 95); font-size: 12px; padding-left: 16px;">[one-line excerpt]</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid oklch(84% 0.01 95); padding-top: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 12px; color: oklch(45% 0.02 95);">
+          <div style="display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; border: 1px solid oklch(70% 0.03 150); background: oklch(99% 0.004 95); padding: 6px 8px;">
+            <span style="flex-shrink: 0;">user@devops:~$</span>
+            <input type="text" value="{{typed}}" onInput="{{onInput}}" onKeyDown="{{onKeyDown}}" placeholder="cd about" style="flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: oklch(20% 0.01 95); font-family: inherit; font-size: 12px; padding: 0;">
+          </div>
+          <div style="flex-shrink: 0;">[EMAIL] &middot; [GITHUB] &middot; [LINKEDIN]</div>
+        </div>
+        <sc-if value="{{hasError}}" hint-placeholder-val="{{false}}">
+          <div style="color: oklch(55% 0.16 30); font-size: 10px;">{{error}}</div>
+        </sc-if>
+        <div style="color: oklch(60% 0.015 95); font-size: 10px;">type a command, click a line above, or use up/down</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="position: absolute; right: 28px; bottom: 100px; width: 56px; height: 56px; border: 1px solid oklch(40% 0.13 150); background: oklch(99% 0.004 95); display: flex; align-items: center; justify-content: center;">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="1.6">
+      <path d="M4 5h16v11H9l-4 3v-3H4z"></path>
+      <path d="M8 9h8M8 12h5"></path>
+    </svg>
+    <div style="position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; background: oklch(40% 0.13 150); animation: pulse 2s ease-in-out infinite;"></div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {
+  state = { active: 'about', typed: '', error: '' };
+
+  sections = ['about', 'projects', 'blog', 'experience', 'contact'];
+
+  labels = {
+    about: '$ cd about',
+    projects: '$ cd projects',
+    blog: '$ cd blog',
+    experience: '$ cd experience',
+    contact: '$ cd contact',
+  };
+
+  goTo = (id) => {
+    this.setState({ active: id, typed: '', error: '' });
+  };
+
+  handleInput = (e) => {
+    this.setState({ typed: e.target.value, error: '' });
+  };
+
+  handleInputKeyDown = (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const raw = this.state.typed.trim().toLowerCase();
+    if (raw === '') return;
+    const cmd = raw.replace(/^cd\s+/, '');
+    if (this.sections.includes(cmd)) {
+      this.goTo(cmd);
+    } else {
+      this.setState({ typed: '', error: 'command not found: ' + raw });
+    }
+  };
+
+  handleWindowKeyDown = (e) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    const idx = this.sections.indexOf(this.state.active);
+    const delta = e.key === 'ArrowDown' ? 1 : -1;
+    const next = this.sections[(idx + delta + this.sections.length) % this.sections.length];
+    this.goTo(next);
+  };
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleWindowKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleWindowKeyDown);
+  }
+
+  renderVals() {
+    const active = this.state.active;
+    return {
+      active,
+      typed: this.state.typed,
+      error: this.state.error,
+      hasError: this.state.error !== '',
+      onInput: this.handleInput,
+      onKeyDown: this.handleInputKeyDown,
+      navItems: this.sections.map((id) => ({
+        id,
+        label: this.labels[id],
+        pick: () => this.goTo(id),
+        bg: id === active ? 'oklch(90% 0.05 150)' : 'transparent',
+        color: id === active ? 'oklch(32% 0.13 150)' : 'oklch(45% 0.02 95)',
+        borderLeft: id === active ? '2px solid oklch(40% 0.13 150)' : '2px solid transparent',
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

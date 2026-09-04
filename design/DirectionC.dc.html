@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap">
+  <style>
+    html, body { margin: 0; padding: 0; }
+    * { box-sizing: border-box; font-family: 'Space Mono', ui-monospace, monospace; }
+    a { color: oklch(90% 0.06 220); text-decoration: underline; }
+    a:hover { color: #ffffff; }
+    @keyframes cycleTitle {
+      0% { opacity: 0; }
+      4% { opacity: 1; }
+      21% { opacity: 1; }
+      25% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .title-cycle { position: relative; height: 1.3em; width: 380px; }
+    .title-cycle span { position: absolute; left: 0; top: 0; width: 100%; text-align: center; opacity: 0; white-space: nowrap; animation: cycleTitle 8s ease-in-out infinite; font-size: 13px; letter-spacing: 0.25em; color: oklch(85% 0.06 220); }
+    .title-cycle span:nth-child(1) { animation-delay: 0s; }
+    .title-cycle span:nth-child(2) { animation-delay: 2s; }
+    .title-cycle span:nth-child(3) { animation-delay: 4s; }
+    .title-cycle span:nth-child(4) { animation-delay: 6s; }
+    .scroller { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .scroller::-webkit-scrollbar { height: 6px; }
+    .scroller::-webkit-scrollbar-thumb { background: oklch(96% 0 0 / 0.4); }
+    .sheet { flex-shrink: 0; width: 260px; scroll-snap-align: start; border: 1px dashed oklch(96% 0 0 / 0.6); padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  </style>
+</helmet>
+
+<div style="width: 1280px; height: 900px; background:
+    repeating-linear-gradient(0deg, oklch(100% 0 0 / 0.06) 0px, oklch(100% 0 0 / 0.06) 1px, transparent 1px, transparent 24px),
+    repeating-linear-gradient(90deg, oklch(100% 0 0 / 0.06) 0px, oklch(100% 0 0 / 0.06) 1px, transparent 1px, transparent 24px),
+    oklch(30% 0.09 250);
+    color: oklch(96% 0 0); padding: 24px; overflow: hidden;">
+
+  <div style="width: 100%; height: 100%; border: 2px solid oklch(96% 0 0); padding: 32px 40px; display: flex; flex-direction: column; position: relative;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px;">
+      <div style="font-size: 38px; font-weight: 700; letter-spacing: 0.08em;">[YOUR NAME]</div>
+      <svg width="360" height="14" viewBox="0 0 360 14">
+        <line x1="0" y1="7" x2="360" y2="7" stroke="oklch(96% 0 0)" stroke-width="1"></line>
+        <line x1="0" y1="0" x2="0" y2="14" stroke="oklch(96% 0 0)" stroke-width="1"></line>
+        <line x1="360" y1="0" x2="360" y2="14" stroke="oklch(96% 0 0)" stroke-width="1"></line>
+      </svg>
+      <div class="title-cycle">
+        <span>SYSTEMS ENGINEER</span>
+        <span>SITE RELIABILITY ENGINEER</span>
+        <span>PLATFORM ENGINEER</span>
+        <span>DEVOPS ENGINEER</span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 24px; margin-top: 36px;">
+
+      <div style="flex: 2; border: 1px dashed oklch(96% 0 0 / 0.6); padding: 18px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 12px; letter-spacing: 0.1em; color: oklch(85% 0.06 220);">01 &mdash; ABOUT</div>
+        <div style="font-size: 12px; line-height: 1.6; color: oklch(90% 0 0);">[one or two lines on your background &amp; what you focus on]</div>
+      </div>
+
+      <div style="flex: 1; border: 1px dashed oklch(96% 0 0 / 0.6); padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <div style="font-size: 12px; letter-spacing: 0.1em; color: oklch(85% 0.06 220); align-self: flex-start;">FIG. 1</div>
+        <div style="width: 96px; height: 96px; border: 1px solid oklch(96% 0 0); display: flex; align-items: center; justify-content: center;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="oklch(96% 0 0)" stroke-width="1.4">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+          </svg>
+        </div>
+        <div style="font-size: 10px; letter-spacing: 0.15em; color: oklch(85% 0.06 220);">PORTRAIT</div>
+      </div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px; min-width: 0;">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.1em; color: oklch(85% 0.06 220);">
+        <span>02 &mdash; PROJECTS</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(85% 0.06 220)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+      </div>
+      <div class="scroller">
+        <div class="sheet">
+          <span style="font-size: 10px; color: oklch(80% 0.04 220);">SHEET 01</span>
+          <span style="font-size: 15px; font-weight: 700;">[PROJECT ONE]</span>
+          <span style="font-size: 11px; line-height: 1.5; color: oklch(90% 0 0);">[one-line description]</span>
+        </div>
+        <div class="sheet">
+          <span style="font-size: 10px; color: oklch(80% 0.04 220);">SHEET 02</span>
+          <span style="font-size: 15px; font-weight: 700;">[PROJECT TWO]</span>
+          <span style="font-size: 11px; line-height: 1.5; color: oklch(90% 0 0);">[one-line description]</span>
+        </div>
+        <div class="sheet">
+          <span style="font-size: 10px; color: oklch(80% 0.04 220);">SHEET 03</span>
+          <span style="font-size: 15px; font-weight: 700;">[PROJECT THREE]</span>
+          <span style="font-size: 11px; line-height: 1.5; color: oklch(90% 0 0);">[one-line description]</span>
+        </div>
+        <div class="sheet">
+          <span style="font-size: 10px; color: oklch(80% 0.04 220);">SHEET 04</span>
+          <span style="font-size: 15px; font-weight: 700;">[PROJECT FOUR]</span>
+          <span style="font-size: 11px; line-height: 1.5; color: oklch(90% 0 0);">[one-line description]</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="position: absolute; right: 40px; bottom: 40px; width: 300px; border: 1px solid oklch(96% 0 0); font-size: 10px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr;">
+        <div style="padding: 6px 10px; border-right: 1px solid oklch(96% 0 0); border-bottom: 1px solid oklch(96% 0 0); color: oklch(80% 0.04 220);">TITLE</div>
+        <div style="padding: 6px 10px; border-bottom: 1px solid oklch(96% 0 0);">[YOUR NAME] &mdash; PORTFOLIO</div>
+        <div style="padding: 6px 10px; border-right: 1px solid oklch(96% 0 0); color: oklch(80% 0.04 220);">SCALE</div>
+        <div style="padding: 6px 10px;">1:1</div>
+      </div>
+    </div>
+
+    <div style="position: absolute; left: 40px; bottom: 40px; font-size: 10px; color: oklch(80% 0.04 220);">
+      [EMAIL] &middot; [GITHUB] &middot; [LINKEDIN]
+    </div>
+
+    <div style="position: absolute; right: 44px; bottom: 108px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+      <span style="font-size: 9px; letter-spacing: 0.1em; color: oklch(85% 0.06 220);">DETAIL A &mdash; ASSISTANT</span>
+      <div style="width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid oklch(96% 0 0); display: flex; align-items: center; justify-content: center;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(96% 0 0)" stroke-width="1.6">
+          <path d="M4 5h16v11H9l-4 3v-3H4z"></path>
+          <path d="M8 9h8M8 12h5"></path>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

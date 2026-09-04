@@ -1,0 +1,13 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1280, "h": 900 },
+    { "file": "MainLight.dc.html", "x": 1360, "y": 0, "w": 1280, "h": 900, "is_interactive": true },
+    { "file": "DirectionC.dc.html", "x": 2720, "y": 0, "w": 1280, "h": 900 }
+  ],
+  "annotations": [
+    { "id": "note-main", "x": 0, "y": -130, "w": 500, "text": "A — Terminal / CLI (dark)\nPhoto as a \"portrait.png\" file preview in the sidebar. Projects are a scrollable row of file cards. Chat launcher bottom-right. Title rotates through your four target roles." },
+    { "id": "note-main-light", "x": 1360, "y": -130, "w": 500, "text": "A — Terminal / CLI (light) — chosen direction\nType a command into \"user@devops:~$\" at the bottom (e.g. \"cd projects\") + Enter, click a nav line, or use Up/Down. Rotating remote/hybrid/relocation status now sits at the top of the sidebar." },
+    { "id": "note-c", "x": 2720, "y": -130, "w": 500, "text": "C — Blueprint / Schematic\nPhoto as a numbered \"FIG. 1\" specimen box. Projects are a scrollable strip of numbered sheets. Chat launcher styled as an engineering \"detail callout\". Same rotating title." }
+  ],
+  "launch": { "view": "focused", "file": "MainLight.dc.html" }
+}

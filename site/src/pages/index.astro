@@ -1,0 +1,31 @@
+---
+import '../styles/global.css';
+
+// This is a scaffolding stub, not the real design. The full Terminal/CLI
+// layout (sidebar nav, rotating title/status, project scroller, blog
+// preview, interactive user@devops command prompt, chat launcher) still
+// needs to be ported from the working prototype into real markup/CSS/JS.
+// Target spec: ../../README.md and ../../design/MainLight.dc.html
+const name = 'Rahat Ahsan';
+const location = 'Manitoba, Canada';
+const roles = ['Systems Engineer', 'Site Reliability Engineer', 'Platform Engineer', 'DevOps Engineer'];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{name}</title>
+  </head>
+  <body>
+    <main style="padding: 2rem; max-width: 640px;">
+      <h1>&gt;_ {name}</h1>
+      <p>{roles.join(' / ')}</p>
+      <p>{location} — open to remote / hybrid / in-person, open to relocation</p>
+      <p style="opacity: 0.6;">
+        Scaffold stub. Real design (Terminal/CLI, interactive nav) not ported yet —
+        see README.md and design/MainLight.dc.html in the parent folder.
+      </p>
+    </main>
+  </body>
+</html>

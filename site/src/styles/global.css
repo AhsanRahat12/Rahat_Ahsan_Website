@@ -1,0 +1,22 @@
+/* Placeholder styles only — this is NOT the real design yet.
+ * The real design spec (Terminal/CLI, light mode, JetBrains Mono,
+ * oklch(40% 0.13 150) accent) lives in ../../design/MainLight.dc.html
+ * and ../../README.md. Porting that into real CSS is the next task. */
+
+:root {
+  --accent: oklch(40% 0.13 150);
+  --paper: oklch(97% 0.006 95);
+  --ink: oklch(20% 0.01 95);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
