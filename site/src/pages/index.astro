@@ -210,7 +210,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         </div>
 
         <section id="about" class="content-section">
-          <h2 class="section-label active">about.md</h2>
+          <h2 class="section-label active">About</h2>
           <div class="about-body">
             {aboutParagraphs.map((p) => <p class="about-para">{p}</p>)}
             <p class="about-tagline">{aboutTagline}</p>
@@ -218,7 +218,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         </section>
 
         <section id="projects" class="content-section">
-          <h2 class="section-label">projects/</h2>
+          <h2 class="section-label">Projects</h2>
           <p class="section-intro">{projectsIntro}</p>
           <div class="scroller">
             {projects.map((p) => (
@@ -237,7 +237,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         </section>
 
         <section id="blog" class="content-section">
-          <h2 class="section-label">Blog/</h2>
+          <h2 class="section-label">Blog</h2>
           <p class="section-intro">{blogIntro}</p>
           <div class="blog-list">
             {blogPosts.length === 0 ? (
@@ -257,7 +257,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         </section>
 
         <section id="experience" class="content-section">
-          <h2 class="section-label">experience.log</h2>
+          <h2 class="section-label">Experience</h2>
           <p class="section-intro">{experienceIntro}</p>
           <div class="skill-grid">
             {skills.map((s) => (
@@ -270,7 +270,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         </section>
 
         <section id="certifications" class="content-section">
-          <h2 class="section-label">certifications/</h2>
+          <h2 class="section-label">Certifications</h2>
           <p class="section-intro">{certificationsIntro}</p>
           <div class="cert-roadmap">
             {certifications.map((c) => (
