@@ -141,7 +141,7 @@ a:hover {
 }
 .photo-frame {
   width: 100%;
-  height: 120px;
+  height: 150px;
   border: 1px solid var(--rule-2);
   background: oklch(99% 0.004 95);
   display: flex;
