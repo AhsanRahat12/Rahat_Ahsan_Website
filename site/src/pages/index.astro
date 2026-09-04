@@ -18,32 +18,57 @@ const navItems = [
   { id: 'certifications', label: '$ cd certifications' },
 ];
 
-const projects = [
-  {
-    name: 'home_lab',
+// Build-time fetch of GitHub repos tagged with the "portfolio" topic — add that
+// topic to any repo on GitHub and it shows up here on the next build, no code
+// change needed. Overrides below keep hand-written copy for repos that have it;
+// anything else falls back to the repo's own GitHub description.
+type Project = { name: string; description: string; status: string; href: string };
+
+const projectOverrides: Record<string, { description: string; status: string }> = {
+  Homelab: {
     description: 'Raspberry Pi k3s cluster, GitOps via Flux — HA Postgres, S3 backups, zero open ports',
     status: 'deployed',
-    href: 'https://github.com/AhsanRahat12/Homelab',
   },
-  {
-    name: 'cloud_lab',
+  Cloudlab: {
     description: 'Multi-tenant GitOps platform on AKS — n8n + PostgreSQL, Flux, Prometheus/Grafana, Telegram alerting',
     status: 'deployed',
-    href: 'https://github.com/AhsanRahat12/Cloudlab',
   },
-  {
-    name: 'study_app',
+  Study_App: {
     description: 'End-to-end DevOps pipeline — DevPod/Docker dev env, deployed to Kubernetes, Trivy-scanned, shipped via CI/CD',
     status: 'deployed',
-    href: 'https://github.com/AhsanRahat12/Study_App',
   },
-  {
-    name: 'rahat_ahsan_website',
+  Rahat_Ahsan_Website: {
     description: 'this site — Astro + Terraform + a guarded chatbot',
     status: 'in progress',
-    href: 'https://github.com/AhsanRahat12/Rahat_Ahsan_Website',
   },
-];
+};
+
+async function fetchGithubProjects(username: string): Promise<Project[]> {
+  try {
+    const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&type=owner`, {
+      headers: { Accept: 'application/vnd.github+json' },
+    });
+    if (!res.ok) return [];
+    const repos = await res.json();
+
+    return repos
+      .filter((r: any) => !r.fork && !r.archived && r.topics?.includes('portfolio'))
+      .sort((a: any, b: any) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime())
+      .map((r: any) => {
+        const override = projectOverrides[r.name];
+        return {
+          name: r.name.toLowerCase(),
+          description: override?.description ?? r.description ?? 'no description yet',
+          status: override?.status ?? 'active',
+          href: r.html_url as string,
+        };
+      });
+  } catch {
+    return [];
+  }
+}
+
+const projects = await fetchGithubProjects('AhsanRahat12');
 
 const projectsIntro = "What I've learned by building — and now operate day-to-day.";
 const blogIntro = "The writeups behind it — what building and running this stuff actually taught me.";
@@ -220,20 +245,24 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         <section id="projects" class="content-section">
           <h2 class="section-label">Projects</h2>
           <p class="section-intro">{projectsIntro}</p>
-          <div class="scroller">
-            {projects.map((p) => (
-              <a class="pcard" href={p.href} target="_blank" rel="noopener noreferrer">
-                <div class="pcard-title-row">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2">
-                    <path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path>
-                  </svg>
-                  <span class="pcard-title">{p.name}</span>
-                </div>
-                <span class="pcard-desc">{p.description}</span>
-                <span class="pcard-status">[{p.status}]</span>
-              </a>
-            ))}
-          </div>
+          {projects.length === 0 ? (
+            <p class="blog-empty">no repos tagged with the "portfolio" topic yet on GitHub</p>
+          ) : (
+            <div class="scroller">
+              {projects.map((p) => (
+                <a class="pcard" href={p.href} target="_blank" rel="noopener noreferrer">
+                  <div class="pcard-title-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2">
+                      <path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path>
+                    </svg>
+                    <span class="pcard-title">{p.name}</span>
+                  </div>
+                  <span class="pcard-desc">{p.description}</span>
+                  <span class="pcard-status">[{p.status}]</span>
+                </a>
+              ))}
+            </div>
+          )}
         </section>
 
         <section id="blog" class="content-section">
