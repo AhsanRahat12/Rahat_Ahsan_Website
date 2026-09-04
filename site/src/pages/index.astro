@@ -50,7 +50,7 @@ const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in pr
 const projectsIntro = "What I've learned by building — and now operate day-to-day.";
 const blogIntro = "The writeups behind it — what building and running this stuff actually taught me.";
 const experienceIntro = 'Skills I picked up, and where I put them to work.';
-const certificationsIntro = 'AWS in progress — Kubernetes certs and Kubestronaut next.';
+const certificationsIntro = 'AWS in progress — Kubernetes certs next.';
 
 const certifications = [
   {
@@ -72,11 +72,6 @@ const certifications = [
     name: 'CKS — Certified Kubernetes Security Specialist',
     status: 'planned',
     description: 'Securing container-based applications and Kubernetes clusters in production.',
-  },
-  {
-    name: 'Kubestronaut',
-    status: 'planned',
-    description: 'CNCF designation awarded once CKA, CKAD, and CKS are all held.',
   },
 ];
 
@@ -190,7 +185,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
               &gt; {cert.name} <span class="cert-status">[{cert.status}]</span>
             </div>
           ))}
-          <div class="cert-note">CKA / CKAD / CKS planned next — Kubestronaut once complete</div>
+          <div class="cert-note">CKA / CKAD / CKS planned next</div>
         </div>
 
         <div class="prompt-block">
