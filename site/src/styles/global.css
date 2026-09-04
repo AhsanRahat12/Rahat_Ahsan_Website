@@ -495,9 +495,6 @@ a:hover {
 .prompt-box {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex: 1;
-  min-width: 0;
   border: 1px solid oklch(70% 0.03 150);
   background: oklch(99% 0.004 95);
   padding: 6px 8px;
