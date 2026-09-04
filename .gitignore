@@ -2,3 +2,7 @@ design/portrait-source/
 site/node_modules/
 site/dist/
 site/.astro/
+
+# Held back from the repo until ready to publish.
+# Remove this line and commit README.md when it's ready to go public.
+README.md
