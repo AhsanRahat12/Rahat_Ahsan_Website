@@ -1,12 +1,18 @@
-/* Placeholder styles only — this is NOT the real design yet.
- * The real design spec (Terminal/CLI, light mode, JetBrains Mono,
- * oklch(40% 0.13 150) accent) lives in ../../design/MainLight.dc.html
- * and ../../README.md. Porting that into real CSS is the next task. */
+/* Real design system, ported from design/MainLight.dc.html (Terminal/CLI, light mode).
+ * Still first-pass: fonts loaded via Google Fonts link (self-hosting is a later polish item),
+ * only one responsive breakpoint so far (see bottom) — full tuning is still open per README.md. */
 
 :root {
-  --accent: oklch(40% 0.13 150);
   --paper: oklch(97% 0.006 95);
+  --paper-2: oklch(94% 0.008 95);
   --ink: oklch(20% 0.01 95);
+  --ink-2: oklch(45% 0.02 95);
+  --ink-3: oklch(55% 0.02 95);
+  --rule: oklch(84% 0.01 95);
+  --rule-2: oklch(80% 0.02 95);
+  --accent: oklch(40% 0.13 150);
+  --accent-active-bg: oklch(90% 0.05 150);
+  --accent-active-ink: oklch(32% 0.13 150);
   color-scheme: light;
 }
 
@@ -14,9 +20,449 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+}
+
+body {
   background: var(--paper);
   color: var(--ink);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  color: oklch(25% 0.13 150);
+  text-decoration: underline;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@keyframes cycleTitle {
+  0% { opacity: 0; }
+  4% { opacity: 1; }
+  21% { opacity: 1; }
+  25% { opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes cycleStatus {
+  0% { opacity: 0; }
+  4% { opacity: 1; }
+  46% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 18px;
+  background: var(--accent);
+  margin-left: 4px;
+  vertical-align: -3px;
+  animation: blink 1s step-end infinite;
+}
+
+/* ---- layout shell ---------------------------------------------------- */
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--paper-2);
+  border-right: 1px solid var(--rule);
+  padding: 22px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.main {
+  flex: 1;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* ---- sidebar: status rotator ------------------------------------------ */
+
+.status-block {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.status-label {
+  color: var(--ink-3);
+  font-size: 11px;
+}
+.status-cycle {
+  position: relative;
+  height: 1.2em;
+  width: 230px;
+}
+.status-cycle span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  white-space: nowrap;
+  animation: cycleStatus 8s ease-in-out infinite;
+  color: var(--accent);
+  font-size: 11px;
+}
+.status-cycle span:nth-child(1) { animation-delay: 0s; }
+.status-cycle span:nth-child(2) { animation-delay: 4s; }
+
+/* ---- sidebar: photo ---------------------------------------------------- */
+
+.photo-block {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.photo-frame {
+  width: 100%;
+  height: 120px;
+  border: 1px solid var(--rule-2);
+  background: oklch(99% 0.004 95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-caption {
+  color: var(--ink-3);
+  font-size: 10px;
+  text-align: center;
+}
+
+/* ---- sidebar: nav ------------------------------------------------------ */
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+.nav-item {
+  display: block;
+  padding: 6px 10px;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--ink-2);
+  background: transparent;
+  border: none;
+  border-left: 2px solid transparent;
+  text-align: left;
+  font-family: inherit;
+}
+.nav-item.active {
+  background: var(--accent-active-bg);
+  color: var(--accent-active-ink);
+  border-left-color: var(--accent);
+}
+
+/* ---- sidebar: certs ----------------------------------------------------- */
+
+.certs-block {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cert-line {
+  color: oklch(35% 0.02 95);
+  font-size: 12px;
+}
+.cert-status {
+  color: var(--accent);
+}
+.cert-note {
+  color: var(--ink-3);
+  font-size: 11px;
+}
+
+/* ---- main: header ------------------------------------------------------- */
+
+.header-box {
+  border: 1px solid var(--rule-2);
+  padding: 26px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.header-name {
+  color: oklch(30% 0.13 150);
+  font-size: 32px;
+  font-weight: 700;
+}
+.title-cycle {
+  position: relative;
+  height: 1.3em;
+  width: 320px;
+}
+.title-cycle span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  white-space: nowrap;
+  animation: cycleTitle 8s ease-in-out infinite;
+  color: oklch(35% 0.03 95);
+  font-size: 16px;
+}
+.title-cycle span:nth-child(1) { animation-delay: 0s; }
+.title-cycle span:nth-child(2) { animation-delay: 2s; }
+.title-cycle span:nth-child(3) { animation-delay: 4s; }
+.title-cycle span:nth-child(4) { animation-delay: 6s; }
+
+.header-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 6px;
+}
+.pwd-line {
+  color: var(--ink-2);
+  font-size: 14px;
+}
+.resume-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: 12px;
+  border: 1px solid var(--accent);
+  padding: 4px 10px;
+  flex-shrink: 0;
+}
+
+/* ---- main: projects scroller --------------------------------------------- */
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.scroller {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 10px;
+}
+.scroller::-webkit-scrollbar { height: 6px; }
+.scroller::-webkit-scrollbar-thumb { background: oklch(75% 0.02 95); }
+.pcard {
+  flex-shrink: 0;
+  width: 250px;
+  scroll-snap-align: start;
+  border: 1px solid var(--rule-2);
+  background: oklch(99% 0.004 95);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pcard-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pcard-title {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+.pcard-desc {
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.pcard-status {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+/* ---- main: blog preview --------------------------------------------------- */
+
+.blog-list {
+  display: flex;
+  flex-direction: column;
+}
+.blog-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.blog-entry:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.blog-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.blog-title {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+.blog-date {
+  color: var(--ink-3);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.blog-excerpt {
+  color: oklch(50% 0.02 95);
+  font-size: 12px;
+  padding-left: 16px;
+}
+.blog-empty {
+  color: var(--ink-3);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ---- main: footer / command prompt ----------------------------------------- */
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+}
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.prompt-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  border: 1px solid oklch(70% 0.03 150);
+  background: oklch(99% 0.004 95);
+  padding: 6px 8px;
+}
+.prompt-box input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 0;
+}
+.contact-links {
+  flex-shrink: 0;
+}
+.command-error {
+  color: oklch(55% 0.16 30);
+  font-size: 10px;
+}
+.command-hint {
+  color: oklch(60% 0.015 95);
+  font-size: 10px;
+}
+
+/* ---- chat launcher ---------------------------------------------------------- */
+
+.chat-launcher {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--accent);
+  background: oklch(99% 0.004 95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.chat-launcher-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ---- responsive (first pass — see README "Responsive / scaling" for the rest) --- */
+
+@media (max-width: 768px) {
+  .shell {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    flex-direction: column;
+  }
+  .nav {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .main {
+    padding: 24px 20px;
+  }
+  .header-name {
+    font-size: 24px;
+  }
+  .title-cycle,
+  .status-cycle {
+    width: 100%;
+  }
+  .footer-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .contact-links {
+    text-align: center;
+  }
 }

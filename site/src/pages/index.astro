@@ -1,14 +1,38 @@
 ---
 import '../styles/global.css';
 
-// This is a scaffolding stub, not the real design. The full Terminal/CLI
-// layout (sidebar nav, rotating title/status, project scroller, blog
-// preview, interactive user@devops command prompt, chat launcher) still
-// needs to be ported from the working prototype into real markup/CSS/JS.
-// Target spec: ../../README.md and ../../design/MainLight.dc.html
+// Real design port from design/MainLight.dc.html (Terminal/CLI, light mode), first pass.
+// Still open (see README.md "Open items"): per-section content (About/Projects/Blog/
+// Experience/Contact currently share one view — nav highlights + the pwd line update,
+// but doesn't yet scroll to distinct content per the "single page, anchored sections"
+// plan), real portrait image (still a placeholder icon), resume PDF, Medium blog feed.
+
 const name = 'Rahat Ahsan';
 const location = 'Manitoba, Canada';
+
 const roles = ['Systems Engineer', 'Site Reliability Engineer', 'Platform Engineer', 'DevOps Engineer'];
+const statusMessages = ['remote / hybrid / in-person', 'open to relocation'];
+
+const navItems = [
+  { id: 'about', label: '$ cd about' },
+  { id: 'projects', label: '$ cd projects' },
+  { id: 'blog', label: '$ cd blog' },
+  { id: 'experience', label: '$ cd experience' },
+  { id: 'contact', label: '$ cd contact' },
+];
+
+const projects = [
+  { name: 'home_lab', description: '[one-line description]', status: 'deployed' },
+  { name: 'cloud_lab', description: '[one-line description]', status: 'deployed' },
+  { name: 'study_app', description: '[one-line description]', status: 'in progress' },
+  {
+    name: 'rahat_ahsan_website',
+    description: 'this site — Astro + Terraform + a guarded chatbot',
+    status: 'in progress',
+  },
+];
+
+const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in progress' }];
 ---
 
 <html lang="en">
@@ -16,16 +40,172 @@ const roles = ['Systems Engineer', 'Site Reliability Engineer', 'Platform Engine
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{name}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <main style="padding: 2rem; max-width: 640px;">
-      <h1>&gt;_ {name}</h1>
-      <p>{roles.join(' / ')}</p>
-      <p>{location} — open to remote / hybrid / in-person, open to relocation</p>
-      <p style="opacity: 0.6;">
-        Scaffold stub. Real design (Terminal/CLI, interactive nav) not ported yet —
-        see README.md and design/MainLight.dc.html in the parent folder.
-      </p>
-    </main>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="status-block">
+          <div class="status-label">$ echo $STATUS</div>
+          <div class="status-cycle">
+            {statusMessages.map((msg) => <span>{msg}</span>)}
+          </div>
+        </div>
+
+        <div class="photo-block">
+          <span class="status-label">$ open portrait.png</span>
+          <div class="photo-frame">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="1.4">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+            </svg>
+          </div>
+          <span class="photo-caption">portrait.png</span>
+        </div>
+
+        <nav class="nav" id="nav">
+          {navItems.map((item, i) => (
+            <button class="nav-item" data-section={item.id} class:list={{ active: i === 0 }}>
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <div class="certs-block">
+          <div class="status-label">$ certs --list</div>
+          {certs.map((cert) => (
+            <div class="cert-line">
+              &gt; {cert.name} <span class="cert-status">[{cert.status}]</span>
+            </div>
+          ))}
+          <div class="cert-note">CKA / CKAD / CKS planned next — Kubestronaut once complete</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="header-box">
+          <div class="header-name">&gt;_ {name}</div>
+          <div class="title-cycle">
+            {roles.map((role) => <span>{role}</span>)}
+          </div>
+          <div class="header-status-row">
+            <div class="pwd-line">&gt; /home/<span id="pwd">about</span><span class="cursor"></span></div>
+            <a href="#" class="resume-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"></path>
+              </svg>
+              resume.pdf
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">
+            <span>$ ls projects/ --scroll</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(45% 0.02 95)" stroke-width="2">
+              <path d="M9 6l6 6-6 6"></path>
+            </svg>
+          </div>
+          <div class="scroller">
+            {projects.map((p) => (
+              <div class="pcard">
+                <div class="pcard-title-row">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2">
+                    <path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path>
+                  </svg>
+                  <span class="pcard-title">{p.name}</span>
+                </div>
+                <span class="pcard-desc">{p.description}</span>
+                <span class="pcard-status">[{p.status}]</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">$ tail -n 2 blog/*.md</div>
+          <div class="blog-list">
+            <p class="blog-empty">no posts yet — will pull from Medium once connected</p>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="footer-row">
+            <div class="prompt-box">
+              <span>user@devops:~$</span>
+              <input type="text" id="cmd-input" placeholder="cd about" autocomplete="off" />
+            </div>
+            <div class="contact-links">[EMAIL] &middot; [GITHUB] &middot; [LINKEDIN]</div>
+          </div>
+          <div class="command-error" id="cmd-error" hidden></div>
+          <div class="command-hint">type a command, click a line above, or use up/down</div>
+        </div>
+      </main>
+    </div>
+
+    <button class="chat-launcher" id="chat-launcher" aria-label="Open chat assistant">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="1.6">
+        <path d="M4 5h16v11H9l-4 3v-3H4z"></path>
+        <path d="M8 9h8M8 12h5"></path>
+      </svg>
+      <div class="chat-launcher-dot"></div>
+    </button>
+
+    <script>
+      const sections = ['about', 'projects', 'blog', 'experience', 'contact'];
+      const navButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.nav-item'));
+      const pwdEl = document.getElementById('pwd')!;
+      const input = document.getElementById('cmd-input') as HTMLInputElement;
+      const errorEl = document.getElementById('cmd-error')!;
+
+      let active = 'about';
+
+      function goTo(id: string) {
+        active = id;
+        pwdEl.textContent = id;
+        navButtons.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.section === id);
+        });
+        errorEl.hidden = true;
+      }
+
+      navButtons.forEach((btn) => {
+        btn.addEventListener('click', () => goTo(btn.dataset.section!));
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        const raw = input.value.trim().toLowerCase();
+        if (raw === '') return;
+        const cmd = raw.replace(/^cd\s+/, '');
+        if (sections.includes(cmd)) {
+          goTo(cmd);
+          input.value = '';
+        } else {
+          errorEl.textContent = `command not found: ${raw}`;
+          errorEl.hidden = false;
+          input.value = '';
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+        e.preventDefault();
+        const idx = sections.indexOf(active);
+        const delta = e.key === 'ArrowDown' ? 1 : -1;
+        goTo(sections[(idx + delta + sections.length) % sections.length]);
+      });
+
+      // Chatbot: not built yet — placeholder so the button isn't dead-silent.
+      document.getElementById('chat-launcher')!.addEventListener('click', () => {
+        alert('Chatbot not built yet — coming once the site + guardrails (see README.md) are in place.');
+      });
+    </script>
   </body>
 </html>
