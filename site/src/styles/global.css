@@ -261,8 +261,6 @@ a:hover {
   flex-shrink: 0;
 }
 
-/* ---- main: projects scroller --------------------------------------------- */
-
 .section-label {
   display: flex;
   align-items: center;
@@ -270,6 +268,27 @@ a:hover {
   color: var(--ink-2);
   font-size: 13px;
 }
+
+/* ---- main: about ------------------------------------------------------------ */
+
+.about-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+.about-para {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.about-tagline {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ---- main: projects scroller --------------------------------------------- */
 .scroller {
   display: flex;
   gap: 16px;
@@ -323,11 +342,17 @@ a:hover {
   padding-bottom: 12px;
   margin-bottom: 12px;
   border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: inherit;
 }
 .blog-entry:last-child {
   border-bottom: none;
   margin-bottom: 0;
   padding-bottom: 0;
+}
+.blog-entry:hover .blog-title {
+  color: var(--accent);
+  text-decoration: underline;
 }
 .blog-title-row {
   display: flex;

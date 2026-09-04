@@ -2,10 +2,8 @@
 import '../styles/global.css';
 
 // Real design port from design/MainLight.dc.html (Terminal/CLI, light mode), first pass.
-// Still open (see README.md "Open items"): per-section content (About/Projects/Blog/
-// Experience/Contact currently share one view — nav highlights + the pwd line update,
-// but doesn't yet scroll to distinct content per the "single page, anchored sections"
-// plan), real portrait image (still a placeholder icon), resume PDF, Medium blog feed.
+// Still open (see README.md "Open items"): Experience section content, resume PDF,
+// Medium blog feed (currently an honest empty state).
 
 const name = 'Rahat Ahsan';
 const location = 'Manitoba, Canada';
@@ -40,6 +38,48 @@ const socialLinks = [
   { label: 'MEDIUM', href: 'https://medium.com/@s.rahatahsan' },
   { label: 'X', href: 'https://x.com/RahatAhsan20' },
 ];
+
+const aboutParagraphs = [
+  `I spend my days as a Data Analyst turning raw production data — timelines, budgets, salary structures for 500+ employees — into decisions people actually act on. That same instinct for turning raw signal into action pulled me into infrastructure: I've built and run Kubernetes clusters on bare metal and in the cloud, with full observability and alerting that catches problems before they become outages. I've replaced manual deployments with GitOps, wired up CI/CD pipelines with testing and vulnerability scanning baked in, and I write up my production incidents publicly.`,
+  `That curiosity didn't come from one place. Environmental Science was my undergrad — physics, chemistry, biology, geology, statistics pulling together — and it's where I first learned how things work together as systems. Day to day, I work with databases and Power Query, automating manual processes wherever I can. It was that combination — systems thinking on one side, the itch to automate on the other — that really sparked my curiosity, and I've been building up my skills to make the jump ever since. With help from KubeCraft, a DevOps mentorship community, I taught myself Kubernetes, Docker, CI/CD, Python, and Linux. Now I'm looking for roles where I get to work hands-on with cloud infrastructure and Kubernetes at scale.`,
+];
+
+const aboutTagline = 'From soil samples to CI/CD pipelines.';
+
+// Build-time fetch of the Medium RSS feed — no client-side call, no CORS issue.
+// See README.md "Architecture notes" for the fuller plan (scheduled rebuild, GitHub fallback).
+type BlogPost = { title: string; link: string; date: string; excerpt: string };
+
+async function fetchMediumPosts(handle: string, limit: number): Promise<BlogPost[]> {
+  try {
+    const res = await fetch(`https://medium.com/feed/${handle}`);
+    if (!res.ok) return [];
+    const xml = await res.text();
+    const items = xml.split('<item>').slice(1, limit + 1);
+
+    return items.map((item) => {
+      const title = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1] ?? 'untitled';
+      const link = item.match(/<link>(.*?)<\/link>/)?.[1] ?? '#';
+      const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1];
+      const date = pubDate
+        ? new Date(pubDate).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            timeZone: 'UTC',
+          })
+        : '';
+      const content = item.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/)?.[1] ?? '';
+      const text = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      const excerpt = text.length > 140 ? `${text.slice(0, 140).trim()}…` : text;
+      return { title, link, date, excerpt };
+    });
+  } catch {
+    return [];
+  }
+}
+
+const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
 ---
 
 <html lang="en">
@@ -108,7 +148,15 @@ const socialLinks = [
           </div>
         </div>
 
-        <div>
+        <section id="about">
+          <div class="section-label">$ cat about.md</div>
+          <div class="about-body">
+            {aboutParagraphs.map((p) => <p class="about-para">{p}</p>)}
+            <p class="about-tagline">{aboutTagline}</p>
+          </div>
+        </section>
+
+        <section id="projects">
           <div class="section-label">
             <span>$ ls projects/ --scroll</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(45% 0.02 95)" stroke-width="2">
@@ -129,16 +177,28 @@ const socialLinks = [
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div>
+        <section id="blog">
           <div class="section-label">$ tail -n 2 blog/*.md</div>
           <div class="blog-list">
-            <p class="blog-empty">no posts yet — will pull from Medium once connected</p>
+            {blogPosts.length === 0 ? (
+              <p class="blog-empty">no posts yet — will pull from Medium once connected</p>
+            ) : (
+              blogPosts.map((post) => (
+                <a class="blog-entry" href={post.link} target="_blank" rel="noopener noreferrer">
+                  <div class="blog-title-row">
+                    <span class="blog-title">{post.title}</span>
+                    <span class="blog-date">{post.date}</span>
+                  </div>
+                  <p class="blog-excerpt">{post.excerpt}</p>
+                </a>
+              ))
+            )}
           </div>
-        </div>
+        </section>
 
-        <div class="footer">
+        <div class="footer" id="contact">
           <div class="footer-row">
             <div class="prompt-box">
               <span>user@devops:~$</span>
@@ -183,6 +243,7 @@ const socialLinks = [
           btn.classList.toggle('active', btn.dataset.section === id);
         });
         errorEl.hidden = true;
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       navButtons.forEach((btn) => {
