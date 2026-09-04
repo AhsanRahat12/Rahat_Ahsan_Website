@@ -44,7 +44,7 @@ const aboutParagraphs = [
   `That curiosity didn't come from one place. Environmental Science was my undergrad — physics, chemistry, biology, geology, statistics pulling together — and it's where I first learned how things work together as systems. Day to day, I work with databases and Power Query, automating manual processes wherever I can. It was that combination — systems thinking on one side, the itch to automate on the other — that really sparked my curiosity, and I've been building up my skills to make the jump ever since. With help from KubeCraft, a DevOps mentorship community, I taught myself Kubernetes, Docker, CI/CD, Python, and Linux. Now I'm looking for roles where I get to work hands-on with cloud infrastructure and Kubernetes at scale.`,
 ];
 
-const aboutTagline = 'From soil samples to CI/CD pipelines.';
+const aboutTagline = '"From soil samples to CI/CD pipelines."';
 
 // Build-time fetch of the Medium RSS feed — no client-side call, no CORS issue.
 // See README.md "Architecture notes" for the fuller plan (scheduled rebuild, GitHub fallback).
@@ -149,7 +149,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
         </div>
 
         <section id="about">
-          <div class="section-label">$ cat about.md</div>
+          <div class="section-label active">$ cat about.md</div>
           <div class="about-body">
             {aboutParagraphs.map((p) => <p class="about-para">{p}</p>)}
             <p class="about-tagline">{aboutTagline}</p>
@@ -236,18 +236,40 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
 
       let active = 'about';
 
-      function goTo(id: string) {
+      function setActive(id: string) {
         active = id;
         pwdEl.textContent = id;
         navButtons.forEach((btn) => {
           btn.classList.toggle('active', btn.dataset.section === id);
         });
+        document.querySelectorAll<HTMLElement>('.section-label').forEach((label) => {
+          label.classList.toggle('active', label.closest('section')?.id === id);
+        });
         errorEl.hidden = true;
+      }
+
+      function goTo(id: string) {
+        setActive(id);
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       navButtons.forEach((btn) => {
         btn.addEventListener('click', () => goTo(btn.dataset.section!));
+      });
+
+      // Scrollspy: keep the nav highlight + pwd line honest when the user scrolls
+      // manually instead of using click/type/arrow-key nav.
+      const scrollObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) setActive(entry.target.id);
+          });
+        },
+        { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
+      );
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) scrollObserver.observe(el);
       });
 
       input.addEventListener('keydown', (e) => {
