@@ -33,6 +33,13 @@ const projects = [
 ];
 
 const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in progress' }];
+
+const socialLinks = [
+  { label: 'GITHUB', href: 'https://github.com/AhsanRahat12' },
+  { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/rahatahsan/' },
+  { label: 'MEDIUM', href: 'https://medium.com/@s.rahatahsan' },
+  { label: 'X', href: 'https://x.com/RahatAhsan20' },
+];
 ---
 
 <html lang="en">
@@ -137,7 +144,14 @@ const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in pr
               <span>user@devops:~$</span>
               <input type="text" id="cmd-input" placeholder="cd about" autocomplete="off" />
             </div>
-            <div class="contact-links">[EMAIL] &middot; [GITHUB] &middot; [LINKEDIN]</div>
+            <div class="contact-links">
+              {socialLinks.map((link, i) => (
+                <>
+                  {i > 0 && <span class="contact-sep">&middot;</span>}
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">[{link.label}]</a>
+                </>
+              ))}
+            </div>
           </div>
           <div class="command-error" id="cmd-error" hidden></div>
           <div class="command-hint">type a command, click a line above, or use up/down</div>
