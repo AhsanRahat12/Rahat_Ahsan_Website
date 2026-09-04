@@ -166,7 +166,14 @@ a:hover {
 .photo-frame img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.75;
+  transition: filter 0.35s ease, opacity 0.35s ease;
+}
+.photo-frame:hover img {
+  filter: grayscale(0%);
+  opacity: 1;
 }
 .photo-caption {
   color: var(--ink-3);
