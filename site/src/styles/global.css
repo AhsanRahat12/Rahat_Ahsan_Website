@@ -63,6 +63,13 @@ a:hover {
   50% { opacity: 0; }
   100% { opacity: 0; }
 }
+@keyframes cycleQuote {
+  0% { opacity: 0; }
+  2% { opacity: 1; }
+  22% { opacity: 1; }
+  25% { opacity: 0; }
+  100% { opacity: 0; }
+}
 @keyframes riseIn {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -204,13 +211,39 @@ a:hover {
   border-left-color: var(--accent);
 }
 
-/* ---- sidebar: certs ----------------------------------------------------- */
+/* ---- sidebar: personality (currently reading + quotes) -------------------- */
 
-.certs-block {
+.personality-block {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+.quote-label {
+  margin-top: 4px;
+}
+.quote-cycle {
+  position: relative;
+  height: 5.5em;
+}
+.quote-cycle span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  color: var(--accent);
+  font-size: 11px;
+  line-height: 1.4;
+  font-style: italic;
+  animation: cycleQuote 20s ease-in-out infinite;
+}
+.quote-cycle span:nth-child(1) { animation-delay: 0s; }
+.quote-cycle span:nth-child(2) { animation-delay: 5s; }
+.quote-cycle span:nth-child(3) { animation-delay: 10s; }
+.quote-cycle span:nth-child(4) { animation-delay: 15s; }
+.quote-author {
+  color: var(--ink-3);
+  font-style: normal;
 }
 
 /* ---- sidebar: command prompt --------------------------------------------- */
@@ -221,17 +254,6 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-.cert-line {
-  color: oklch(35% 0.02 95);
-  font-size: 12px;
-}
-.cert-status {
-  color: var(--accent);
-}
-.cert-note {
-  color: var(--ink-3);
-  font-size: 11px;
 }
 
 /* ---- main: header ------------------------------------------------------- */
