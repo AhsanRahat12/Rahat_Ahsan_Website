@@ -54,12 +54,15 @@ const experienceIntro = 'Skills I picked up, and where I put them to work.';
 const skills = [
   { name: 'Kubernetes', context: 'bare-metal k3s (home_lab) and AKS (cloud_lab), both GitOps-managed' },
   { name: 'GitOps (Flux)', context: 'continuous deployment across home_lab and cloud_lab' },
-  { name: 'CI/CD', context: 'Trivy-scanned, tested pipelines in study_app and cloud_lab' },
+  { name: 'CI/CD', context: 'Trivy-scanned, tested pipeline in study_app' },
   { name: 'Terraform / IaC', context: 'provisioning cloud_lab on Azure' },
   { name: 'Docker', context: 'containerized dev environment in study_app' },
-  { name: 'Observability', context: 'Prometheus, Grafana, Telegram alerting on cloud_lab' },
+  {
+    name: 'Observability',
+    context: 'Prometheus + Grafana on home_lab and cloud_lab; Slack alerts on home_lab, Telegram on cloud_lab',
+  },
   { name: 'Databases', context: 'HA Postgres on home_lab; SQL + Power Query day-to-day' },
-  { name: 'Linux administration', context: 'Raspberry Pi cluster running home_lab' },
+  { name: 'Linux', context: 'daily driver on Arch Linux + Hyprland; cluster administration on home_lab' },
 ];
 
 const socialLinks = [
