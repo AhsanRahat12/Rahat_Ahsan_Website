@@ -312,6 +312,14 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+.pcard:hover {
+  border-color: var(--accent);
+}
+.pcard:hover .pcard-title {
+  color: var(--accent);
 }
 .pcard-title-row {
   display: flex;

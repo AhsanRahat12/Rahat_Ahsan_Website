@@ -20,13 +20,29 @@ const navItems = [
 ];
 
 const projects = [
-  { name: 'home_lab', description: '[one-line description]', status: 'deployed' },
-  { name: 'cloud_lab', description: '[one-line description]', status: 'deployed' },
-  { name: 'study_app', description: '[one-line description]', status: 'in progress' },
+  {
+    name: 'home_lab',
+    description: 'Raspberry Pi k3s cluster, GitOps via Flux — HA Postgres, S3 backups, zero open ports',
+    status: 'deployed',
+    href: 'https://github.com/AhsanRahat12/Homelab',
+  },
+  {
+    name: 'cloud_lab',
+    description: 'Multi-tenant GitOps platform on AKS — n8n + PostgreSQL, Flux, Prometheus/Grafana, Telegram alerting',
+    status: 'deployed',
+    href: 'https://github.com/AhsanRahat12/Cloudlab',
+  },
+  {
+    name: 'study_app',
+    description: 'End-to-end DevOps pipeline — DevPod/Docker dev env, deployed to Kubernetes, Trivy-scanned, shipped via CI/CD',
+    status: 'in progress',
+    href: 'https://github.com/AhsanRahat12/Study_App',
+  },
   {
     name: 'rahat_ahsan_website',
     description: 'this site — Astro + Terraform + a guarded chatbot',
     status: 'in progress',
+    href: 'https://github.com/AhsanRahat12/Rahat_Ahsan_Website',
   },
 ];
 
@@ -165,7 +181,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
           </div>
           <div class="scroller">
             {projects.map((p) => (
-              <div class="pcard">
+              <a class="pcard" href={p.href} target="_blank" rel="noopener noreferrer">
                 <div class="pcard-title-row">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="oklch(40% 0.13 150)" stroke-width="2">
                     <path d="M3 7h6l2 2h10v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7z"></path>
@@ -174,7 +190,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
                 </div>
                 <span class="pcard-desc">{p.description}</span>
                 <span class="pcard-status">[{p.status}]</span>
-              </div>
+              </a>
             ))}
           </div>
         </section>
