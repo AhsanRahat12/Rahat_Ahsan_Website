@@ -49,54 +49,17 @@ const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in pr
 
 const projectsIntro = "What I've learned by building — and now operate day-to-day.";
 const blogIntro = "The writeups behind it — what building and running this stuff actually taught me.";
-const experienceIntro = "The timeline — day job, self-taught pivot, and what I've shipped since.";
+const experienceIntro = 'Skills I picked up, and where I put them to work.';
 
-const experience = [
-  {
-    title: 'Data Analyst',
-    date: 'early 2024 → present',
-    description:
-      'Track production timelines, budgets, and salary structures for 500+ employees at a manufacturing company; work with databases and Power Query, automating manual processes.',
-  },
-  {
-    title: 'KubeCraft Mentorship',
-    date: 'March 2026 → present',
-    description:
-      'Started learning Linux, Kubernetes, Docker, and cloud infrastructure through KubeCraft, a DevOps mentorship community — the start of the self-taught pivot into infra.',
-  },
-  {
-    title: 'home_lab',
-    date: 'March 2026',
-    description:
-      'Built and deployed a Raspberry Pi k3s cluster — GitOps via Flux, HA Postgres, S3 backups, zero open ports via Cloudflare Tunnel.',
-    href: 'https://github.com/AhsanRahat12/Homelab',
-  },
-  {
-    title: 'Started writing',
-    date: 'March 2026 → present',
-    description: 'Began publishing real production incidents and infrastructure writeups on Medium — 10 posts and counting.',
-    href: 'https://medium.com/@s.rahatahsan',
-  },
-  {
-    title: 'cloud_lab',
-    date: 'June 2026',
-    description:
-      'Designed and deployed a production-grade, multi-tenant GitOps platform on AKS — n8n + PostgreSQL, Flux, Prometheus/Grafana, Telegram alerting.',
-    href: 'https://github.com/AhsanRahat12/Cloudlab',
-  },
-  {
-    title: 'study_app',
-    date: 'July 2026',
-    description:
-      'Shipped an end-to-end DevOps pipeline — containerized dev environment, deployed to Kubernetes, Trivy vulnerability scanning, full CI/CD.',
-    href: 'https://github.com/AhsanRahat12/Study_App',
-  },
-  {
-    title: 'This website',
-    date: 'September 2026',
-    description: 'Started building this site as its own DevOps project — Astro now, Terraform + CI/CD + a guarded chatbot to follow.',
-    href: 'https://github.com/AhsanRahat12/Rahat_Ahsan_Website',
-  },
+const skills = [
+  { name: 'Kubernetes', context: 'bare-metal k3s (home_lab) and AKS (cloud_lab), both GitOps-managed' },
+  { name: 'GitOps (Flux)', context: 'continuous deployment across home_lab and cloud_lab' },
+  { name: 'CI/CD', context: 'Trivy-scanned, tested pipelines in study_app and cloud_lab' },
+  { name: 'Terraform / IaC', context: 'provisioning cloud_lab on Azure' },
+  { name: 'Docker', context: 'containerized dev environment in study_app' },
+  { name: 'Observability', context: 'Prometheus, Grafana, Telegram alerting on cloud_lab' },
+  { name: 'Databases', context: 'HA Postgres on home_lab; SQL + Power Query day-to-day' },
+  { name: 'Linux administration', context: 'Raspberry Pi cluster running home_lab' },
 ];
 
 const socialLinks = [
@@ -265,20 +228,11 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         <section id="experience" class="content-section">
           <h2 class="section-label">experience.log</h2>
           <p class="section-intro">{experienceIntro}</p>
-          <div class="exp-list">
-            {experience.map((e) => (
-              <div class="exp-entry">
-                <div class="exp-title-row">
-                  <span class="exp-title">
-                    {e.href ? (
-                      <a href={e.href} target="_blank" rel="noopener noreferrer">{e.title}</a>
-                    ) : (
-                      e.title
-                    )}
-                  </span>
-                  <span class="exp-date">{e.date}</span>
-                </div>
-                <p class="exp-desc">{e.description}</p>
+          <div class="skill-grid">
+            {skills.map((s) => (
+              <div class="skill-item">
+                <span class="skill-name">{s.name}</span>
+                <span class="skill-context">{s.context}</span>
               </div>
             ))}
           </div>
