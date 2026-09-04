@@ -162,6 +162,15 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           ))}
           <div class="cert-note">CKA / CKAD / CKS planned next — Kubestronaut once complete</div>
         </div>
+
+        <div class="prompt-block">
+          <div class="prompt-box">
+            <span>user@devops:~$</span>
+            <input type="text" id="cmd-input" placeholder="cd about" autocomplete="off" />
+          </div>
+          <div class="command-error" id="cmd-error" hidden></div>
+          <div class="command-hint">type a command, click a line above, or use up/down</div>
+        </div>
       </aside>
 
       <main class="main">
@@ -242,22 +251,14 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         </section>
 
         <div class="footer" id="contact">
-          <div class="footer-row">
-            <div class="prompt-box">
-              <span>user@devops:~$</span>
-              <input type="text" id="cmd-input" placeholder="cd about" autocomplete="off" />
-            </div>
-            <div class="contact-links">
-              {socialLinks.map((link, i) => (
-                <>
-                  {i > 0 && <span class="contact-sep">&middot;</span>}
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">[{link.label}]</a>
-                </>
-              ))}
-            </div>
+          <div class="contact-links">
+            {socialLinks.map((link, i) => (
+              <>
+                {i > 0 && <span class="contact-sep">&middot;</span>}
+                <a href={link.href} target="_blank" rel="noopener noreferrer">[{link.label}]</a>
+              </>
+            ))}
           </div>
-          <div class="command-error" id="cmd-error" hidden></div>
-          <div class="command-hint">type a command, click a line above, or use up/down</div>
         </div>
       </main>
     </div>
@@ -303,27 +304,34 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
       });
 
       // Scrollspy: keep the nav highlight + pwd line honest when the user scrolls
-      // manually instead of using click/type/arrow-key nav. When two adjacent
-      // sections are simultaneously intersecting (e.g. a short section followed
-      // closely by the footer), prefer whichever comes first in document order
-      // instead of letting the last IntersectionObserver entry win arbitrarily —
-      // otherwise a short section like blog gets its highlight stolen by contact.
-      const intersecting = new Set<string>();
-      const scrollObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) intersecting.add(entry.target.id);
-            else intersecting.delete(entry.target.id);
-          });
-          const current = sections.find((id) => intersecting.has(id));
-          if (current) setActive(current);
-        },
-        { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
-      );
-      sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) scrollObserver.observe(el);
-      });
+      // manually instead of using click/type/arrow-key nav. Uses each section's
+      // position relative to a fixed line near the top of the viewport (the last
+      // section whose top has crossed above that line wins) rather than
+      // IntersectionObserver bands — bands need enough scroll room *past* a
+      // section to register it, which breaks for a short last section (e.g.
+      // experience) with little page left below it to scroll into.
+      function currentSectionFromScroll(): string {
+        const threshold = window.innerHeight * 0.3;
+        let current = sections[0];
+        for (const id of sections) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= threshold) current = id;
+        }
+        return current;
+      }
+
+      let scrollTicking = false;
+      function onScroll() {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          setActive(currentSectionFromScroll());
+          scrollTicking = false;
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
 
       input.addEventListener('keydown', (e) => {
         if (e.key !== 'Enter') return;

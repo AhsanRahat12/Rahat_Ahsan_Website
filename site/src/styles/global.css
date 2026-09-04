@@ -94,6 +94,10 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 18px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .main {
@@ -101,7 +105,7 @@ a:hover {
   padding: 40px 48px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
   min-width: 0;
 }
 
@@ -202,6 +206,16 @@ a:hover {
   flex-direction: column;
   gap: 6px;
 }
+
+/* ---- sidebar: command prompt --------------------------------------------- */
+
+.prompt-block {
+  margin-top: auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .cert-line {
   color: oklch(35% 0.02 95);
   font-size: 12px;
@@ -297,6 +311,10 @@ a:hover {
   transform: scale(1);
   transition: opacity 0.35s ease, transform 0.35s ease;
   animation: riseIn 0.5s ease-out both;
+}
+.content-section:not(:first-of-type) {
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
 }
 .content-section:nth-of-type(2) { animation-delay: 0.08s; }
 .content-section:nth-of-type(3) { animation-delay: 0.16s; }
@@ -463,21 +481,14 @@ a:hover {
   line-height: 1.4;
 }
 
-/* ---- main: footer / command prompt ----------------------------------------- */
+/* ---- main: footer (contact links) -------------------------------------------- */
 
 .footer {
-  margin-top: auto;
   display: flex;
   flex-direction: column;
   gap: 6px;
   border-top: 1px solid var(--rule);
   padding-top: 16px;
-}
-.footer-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   font-size: 12px;
   color: var(--ink-2);
 }
@@ -561,6 +572,9 @@ a:hover {
     border-right: none;
     border-bottom: 1px solid var(--rule);
     flex-direction: column;
+    position: static;
+    height: auto;
+    overflow-y: visible;
   }
   .nav {
     flex-direction: row;
@@ -575,10 +589,6 @@ a:hover {
   .title-cycle,
   .status-cycle {
     width: 100%;
-  }
-  .footer-row {
-    flex-direction: column;
-    align-items: stretch;
   }
   .contact-links {
     text-align: center;
