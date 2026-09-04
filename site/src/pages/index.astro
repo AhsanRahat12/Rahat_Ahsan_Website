@@ -35,7 +35,7 @@ const projects = [
   {
     name: 'study_app',
     description: 'End-to-end DevOps pipeline — DevPod/Docker dev env, deployed to Kubernetes, Trivy-scanned, shipped via CI/CD',
-    status: 'in progress',
+    status: 'deployed',
     href: 'https://github.com/AhsanRahat12/Study_App',
   },
   {
@@ -47,6 +47,9 @@ const projects = [
 ];
 
 const certs = [{ name: 'AWS Solutions Architect Associate (SAA)', status: 'in progress' }];
+
+const projectsIntro = "What I've learned by building — and now operate day-to-day.";
+const blogIntro = "The writeups behind it — what building and running this stuff actually taught me.";
 
 const socialLinks = [
   { label: 'GITHUB', href: 'https://github.com/AhsanRahat12' },
@@ -87,7 +90,7 @@ async function fetchMediumPosts(handle: string, limit: number): Promise<BlogPost
         : '';
       const content = item.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/)?.[1] ?? '';
       const text = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-      const excerpt = text.length > 140 ? `${text.slice(0, 140).trim()}…` : text;
+      const excerpt = text.length > 260 ? `${text.slice(0, 260).trim()}…` : text;
       return { title, link, date, excerpt };
     });
   } catch {
@@ -95,7 +98,7 @@ async function fetchMediumPosts(handle: string, limit: number): Promise<BlogPost
   }
 }
 
-const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
+const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
 ---
 
 <html lang="en">
@@ -164,21 +167,17 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
           </div>
         </div>
 
-        <section id="about">
-          <div class="section-label active">$ cat about.md</div>
+        <section id="about" class="content-section">
+          <h2 class="section-label active">about.md</h2>
           <div class="about-body">
             {aboutParagraphs.map((p) => <p class="about-para">{p}</p>)}
             <p class="about-tagline">{aboutTagline}</p>
           </div>
         </section>
 
-        <section id="projects">
-          <div class="section-label">
-            <span>$ ls projects/ --scroll</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="oklch(45% 0.02 95)" stroke-width="2">
-              <path d="M9 6l6 6-6 6"></path>
-            </svg>
-          </div>
+        <section id="projects" class="content-section">
+          <h2 class="section-label">projects/</h2>
+          <p class="section-intro">{projectsIntro}</p>
           <div class="scroller">
             {projects.map((p) => (
               <a class="pcard" href={p.href} target="_blank" rel="noopener noreferrer">
@@ -195,8 +194,9 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
           </div>
         </section>
 
-        <section id="blog">
-          <div class="section-label">$ tail -n 2 blog/*.md</div>
+        <section id="blog" class="content-section">
+          <h2 class="section-label">Blog/</h2>
+          <p class="section-intro">{blogIntro}</p>
           <div class="blog-list">
             {blogPosts.length === 0 ? (
               <p class="blog-empty">no posts yet — will pull from Medium once connected</p>
@@ -258,15 +258,17 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 2);
         navButtons.forEach((btn) => {
           btn.classList.toggle('active', btn.dataset.section === id);
         });
-        document.querySelectorAll<HTMLElement>('.section-label').forEach((label) => {
-          label.classList.toggle('active', label.closest('section')?.id === id);
+        document.querySelectorAll<HTMLElement>('.content-section').forEach((section) => {
+          const isActive = section.id === id;
+          section.classList.toggle('dimmed', !isActive);
+          section.querySelector('.section-label')?.classList.toggle('active', isActive);
         });
         errorEl.hidden = true;
       }
 
       function goTo(id: string) {
         setActive(id);
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
       navButtons.forEach((btn) => {
