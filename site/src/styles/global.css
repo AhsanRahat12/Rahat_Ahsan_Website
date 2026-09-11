@@ -335,20 +335,40 @@ a:hover {
 
 /* ---- main: about ------------------------------------------------------------ */
 
-.about-body {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.about-photo-frame {
+  float: left;
+  shape-outside: margin-box;
+  width: 260px;
+  height: 170px;
+  margin: 0 26px 14px 4px;
+  border: 1px solid var(--rule-2);
+  background: oklch(99% 0.004 95);
+  overflow: hidden;
+}
+.about-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  opacity: 0.8;
+  transition: filter 0.35s ease, opacity 0.35s ease;
+}
+.about-photo-frame:hover img {
+  filter: grayscale(0%);
+  opacity: 1;
 }
 .about-para {
   color: var(--ink);
   font-size: 13px;
   line-height: 1.7;
+  margin: 0 0 12px;
 }
 .about-tagline {
   color: var(--accent);
   font-size: 13px;
   font-weight: 700;
+  clear: left;
+  margin: 0;
 }
 
 /* ---- main: projects scroller --------------------------------------------- */
@@ -786,5 +806,12 @@ a:hover {
   }
   .skill-grid {
     grid-template-columns: 1fr;
+  }
+  .about-photo-frame {
+    float: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 480 / 354;
+    margin: 0 0 14px;
   }
 }

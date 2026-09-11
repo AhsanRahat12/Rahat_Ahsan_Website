@@ -188,6 +188,9 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         <section id="about" class="content-section">
           <h2 class="section-label active">About</h2>
           <div class="about-body">
+            <div class="about-photo-frame">
+              <img src="/images/portrait.jpg" alt={name} width="480" height="354" />
+            </div>
             {aboutParagraphs.map((p) => <p class="about-para">{p}</p>)}
             <p class="about-tagline">{aboutTagline}</p>
           </div>
