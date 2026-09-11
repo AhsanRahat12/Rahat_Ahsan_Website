@@ -527,6 +527,19 @@ a:hover {
   font-size: 11px;
   line-height: 1.4;
 }
+.skill-projects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 4px;
+}
+.skill-project-link {
+  color: var(--accent);
+  font-size: 10px;
+}
+.skill-project-link::before {
+  content: '▸ ';
+}
 
 /* ---- main: certifications roadmap ------------------------------------------- */
 

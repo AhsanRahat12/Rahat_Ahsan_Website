@@ -49,18 +49,42 @@ const certifications = [
   },
 ];
 
+// A skill's "implemented in" links point either at an internal project page
+// (repos auto-populated from GitHub, see lib/github.ts) or straight at a repo
+// that isn't part of that list.
+const project = (slug: string) => ({ label: slug, href: `/projects/${slug}` });
+const external = (label: string, href: string) => ({ label, href });
+
 const skills = [
-  { name: 'Kubernetes', context: 'bare-metal k3s (home_lab) and AKS (cloud_lab), both GitOps-managed' },
-  { name: 'GitOps (Flux)', context: 'continuous deployment across home_lab and cloud_lab' },
-  { name: 'CI/CD', context: 'Trivy-scanned, tested pipeline in study_app' },
-  { name: 'Terraform / IaC', context: 'provisioning cloud_lab on Azure' },
-  { name: 'Docker', context: 'containerized dev environment in study_app' },
+  {
+    name: 'Kubernetes',
+    context: 'bare-metal k3s and AKS, both GitOps-managed',
+    links: [project('home_lab'), project('cloud_lab')],
+  },
+  {
+    name: 'GitOps (Flux)',
+    context: 'continuous deployment on every change',
+    links: [project('home_lab'), project('cloud_lab')],
+  },
+  { name: 'CI/CD', context: 'Trivy-scanned, tested pipeline', links: [project('study_app')] },
+  { name: 'Terraform / IaC', context: 'provisioning on Azure', links: [project('cloud_lab')] },
+  { name: 'Docker', context: 'containerized dev environment', links: [project('study_app')] },
   {
     name: 'Observability',
-    context: 'Prometheus + Grafana on home_lab and cloud_lab; Slack alerts on home_lab, Telegram on cloud_lab',
+    context: 'Prometheus + Grafana, alerting on Slack and Telegram',
+    links: [project('home_lab'), project('cloud_lab')],
   },
-  { name: 'Databases', context: 'HA Postgres on home_lab; SQL + Power Query day-to-day' },
-  { name: 'Linux', context: 'daily driver on Arch Linux + Hyprland; cluster administration on home_lab' },
+  { name: 'Databases', context: 'HA Postgres; SQL + Power Query day-to-day', links: [project('home_lab')] },
+  {
+    name: 'Linux',
+    context: 'daily driver on Arch Linux + Hyprland; cluster administration',
+    links: [external('arch-linux-setup', 'https://github.com/AhsanRahat12/arch-linux-setup'), project('home_lab')],
+  },
+  {
+    name: 'Scripting',
+    context: 'Python (FastAPI/Flask) and Bash automation across every project',
+    links: [project('study_app'), external('arch-linux-setup', 'https://github.com/AhsanRahat12/arch-linux-setup')],
+  },
 ];
 
 const socialLinks = [
@@ -267,11 +291,24 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         <section id="experience" class="content-section">
           <h2 class="section-label">Experience</h2>
           <p class="section-intro">{experienceIntro}</p>
+
           <div class="skill-grid">
             {skills.map((s) => (
               <div class="skill-item">
                 <span class="skill-name">{s.name}</span>
                 <span class="skill-context">{s.context}</span>
+                <div class="skill-projects">
+                  {s.links.map((link) => (
+                    <a
+                      class="skill-project-link"
+                      href={link.href}
+                      target={link.href.startsWith('http') ? '_blank' : undefined}
+                      rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    >
+                      implemented in: {link.label}
+                    </a>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
