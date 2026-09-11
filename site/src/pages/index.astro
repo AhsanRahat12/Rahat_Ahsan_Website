@@ -12,11 +12,11 @@ const roles = ['Systems Engineer', 'Site Reliability Engineer', 'Platform Engine
 const statusMessages = ['remote / hybrid / in-person', 'open to relocation'];
 
 const navItems = [
-  { id: 'about', label: '$ cd about' },
-  { id: 'projects', label: '$ cd projects' },
-  { id: 'blog', label: '$ cd blog' },
-  { id: 'experience', label: '$ cd experience' },
-  { id: 'certifications', label: '$ cd certifications' },
+  { id: 'about', label: '$ cd About' },
+  { id: 'projects', label: '$ cd Projects' },
+  { id: 'blog', label: '$ cd Blog' },
+  { id: 'experience', label: '$ cd Experience' },
+  { id: 'certifications', label: '$ cd Certifications' },
 ];
 
 const projects = await fetchGithubProjects();
@@ -198,10 +198,19 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         <div class="prompt-block">
           <div class="status-label">user@devops:~$</div>
           <div class="prompt-box">
-            <input type="text" id="cmd-input" placeholder="cd about" autocomplete="off" />
+            <input
+              type="text"
+              id="cmd-input"
+              placeholder="cd About"
+              autocomplete="off"
+              data-project-slugs={JSON.stringify(projects.map((p) => p.slug))}
+            />
           </div>
           <div class="command-error" id="cmd-error" hidden></div>
-          <div class="command-hint">type a command, click a line above, or use up/down</div>
+          <div class="command-hint">
+            type a command (Tab to autocomplete), click a line above, or use up/down — try "cd About" or "cd
+            Projects/{projects[0]?.slug ?? 'home_lab'}"
+          </div>
         </div>
       </aside>
 
@@ -353,10 +362,56 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
 
     <script>
       const sections = ['about', 'projects', 'blog', 'experience', 'certifications'];
+      const sectionLabels: Record<string, string> = {
+        about: 'About',
+        projects: 'Projects',
+        blog: 'Blog',
+        experience: 'Experience',
+        certifications: 'Certifications',
+      };
       const navButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.nav-item'));
       const pwdEl = document.getElementById('pwd')!;
       const input = document.getElementById('cmd-input') as HTMLInputElement;
       const errorEl = document.getElementById('cmd-error')!;
+      const projectSlugs: string[] = JSON.parse(input.dataset.projectSlugs ?? '[]');
+
+      // Properly-cased commands for Tab-completion — matching is case-insensitive,
+      // but what gets filled into the input should read like the nav labels.
+      // "Projects/" is capitalized to match "cd Projects"; the slug itself stays
+      // lowercase since that's its real identifier, not a word.
+      const commands = [
+        ...sections.map((s) => `cd ${sectionLabels[s]}`),
+        ...projectSlugs.map((s) => `cd Projects/${s}`),
+      ];
+
+      // Cycles through matches on repeated Tab presses (like a shell), instead of
+      // dumping every candidate into the error line — that read as a thrown error.
+      let cycleMatches: string[] = [];
+      let cycleIndex = -1;
+      let cycleBase = '';
+
+      function resetCycle() {
+        cycleMatches = [];
+        cycleIndex = -1;
+        cycleBase = '';
+      }
+
+      function autocomplete() {
+        const typed = input.value;
+        if (typed === '') return;
+
+        const continuingCycle = cycleMatches.length > 0 && input.value === cycleMatches[cycleIndex];
+        if (!continuingCycle) {
+          cycleBase = typed;
+          cycleMatches = commands.filter((c) => c.toLowerCase().startsWith(typed.toLowerCase()));
+          cycleIndex = -1;
+        }
+
+        if (cycleMatches.length === 0) return;
+        cycleIndex = (cycleIndex + 1) % cycleMatches.length;
+        input.value = cycleMatches[cycleIndex];
+        errorEl.hidden = true;
+      }
 
       let active = 'about';
 
@@ -418,15 +473,28 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
       window.addEventListener('resize', onScroll);
       onScroll();
 
+      // Typing (as opposed to a Tab-filled value) always starts a fresh completion.
+      input.addEventListener('input', () => {
+        if (input.value !== cycleMatches[cycleIndex]) resetCycle();
+      });
+
       input.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          autocomplete();
+          return;
+        }
         if (e.key !== 'Enter') return;
         e.preventDefault();
         const raw = input.value.trim().toLowerCase();
         if (raw === '') return;
-        const cmd = raw.replace(/^cd\s+/, '');
+        const cmd = raw.replace(/^cd\s+/, '').replace(/^projects\//, '');
+        resetCycle();
         if (sections.includes(cmd)) {
           goTo(cmd);
           input.value = '';
+        } else if (projectSlugs.includes(cmd)) {
+          window.location.href = `/projects/${cmd}`;
         } else {
           errorEl.textContent = `command not found: ${raw}`;
           errorEl.hidden = false;
