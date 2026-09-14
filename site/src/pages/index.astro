@@ -141,6 +141,13 @@ const skills = [
   },
 ];
 
+// The skill grid is 2 columns on desktop; whichever items land in the final
+// row (1 or 2 of them, depending on whether the count is even) skip the
+// trailing divider. Computed here instead of via CSS :nth-last-child, which
+// only gets that right when the total happens to be even.
+const skillGridColumns = 2;
+const skillLastRowStart = skills.length - (skills.length % skillGridColumns || skillGridColumns);
+
 const socialLinks = [
   { label: 'GITHUB', href: 'https://github.com/AhsanRahat12' },
   { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/rahatahsan/' },
@@ -415,8 +422,8 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           <p class="section-intro">{experienceIntro}</p>
 
           <div class="skill-grid">
-            {skills.map((s) => (
-              <div class="skill-item reveal">
+            {skills.map((s, i) => (
+              <div class="skill-item reveal" class:list={{ 'skill-item-last-row': i >= skillLastRowStart }}>
                 <span class="skill-name">{s.name}</span>
                 <span class="skill-context">{s.context}</span>
                 <div class="skill-projects">

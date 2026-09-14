@@ -695,7 +695,10 @@ a:hover {
   border-left-color: var(--accent);
   padding-left: 12px;
 }
-.skill-item:nth-last-child(-n + 2) {
+/* Which item(s) count as "the last row" is computed at build time (see
+   index.astro) — a pure-CSS :nth-last-child(-n+2) guess only happens to be
+   right when the total count is even. */
+.skill-item-last-row {
   border-bottom: none;
   padding-bottom: 0;
 }
@@ -1087,6 +1090,16 @@ a:hover {
   }
   .skill-grid {
     grid-template-columns: 1fr;
+  }
+  /* Single column here, so "last row" is just the literal last item —
+     restore the divider the desktop 2-column class hid on anything else. */
+  .skill-item-last-row {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+  }
+  .skill-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
   .stats-row {
     grid-template-columns: repeat(2, 1fr);
