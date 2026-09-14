@@ -15,29 +15,49 @@ export type Project = {
 const GITHUB_USERNAME = 'AhsanRahat12';
 
 // Hand-written copy for repos that have it; anything else falls back to the
-// repo's own GitHub description/name.
-const projectOverrides: Record<string, { name: string; description: string; status: string }> = {
+// repo's own GitHub description/name. `slug` drives the URL (/projects/<slug>)
+// and stays lowercase/url-safe; `name` is the display name and matches the
+// repo's actual casing on GitHub.
+const projectOverrides: Record<string, { name: string; slug: string; description: string; status: string }> = {
   Homelab: {
-    name: 'home_lab',
+    name: 'Homelab',
+    slug: 'home_lab',
     description: 'Raspberry Pi k3s cluster, GitOps via Flux — HA Postgres, S3 backups, zero open ports',
     status: 'deployed',
   },
   Cloudlab: {
-    name: 'cloud_lab',
+    name: 'Cloudlab',
+    slug: 'cloud_lab',
     description: 'Multi-tenant GitOps platform on AKS — n8n + PostgreSQL, Flux, Prometheus/Grafana, Telegram alerting',
     status: 'deployed',
   },
   Study_App: {
-    name: 'study_app',
+    name: 'Study_App',
+    slug: 'study_app',
     description: 'End-to-end DevOps pipeline — DevPod/Docker dev env, deployed to Kubernetes, Trivy-scanned, shipped via CI/CD',
     status: 'deployed',
   },
   Rahat_Ahsan_Website: {
-    name: 'rahat_ahsan_website',
+    name: 'Rahat_Ahsan_Website',
+    slug: 'rahat_ahsan_website',
     description: 'this site — Astro + Terraform + a guarded chatbot',
     status: 'in progress',
   },
 };
+
+// If the GitHub API is unreachable or rate-limited (60 req/hr unauthenticated —
+// easy to hit during local dev), fall back to this hand-written list instead of
+// shipping a page with zero projects. Kept in sync manually; the live API path
+// above is still the source of truth whenever it's available.
+const fallbackProjects: Project[] = Object.entries(projectOverrides).map(([repoName, o]) => ({
+  slug: o.slug,
+  name: o.name,
+  description: o.description,
+  status: o.status,
+  href: `https://github.com/${GITHUB_USERNAME}/${repoName}`,
+  repo: `${GITHUB_USERNAME}/${repoName}`,
+  branch: 'main',
+}));
 
 // Repos tagged with the "portfolio" topic on GitHub show up here automatically —
 // add the topic to any repo and it appears on the next build, no code change.
@@ -46,7 +66,7 @@ export async function fetchGithubProjects(): Promise<Project[]> {
     const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&type=owner`, {
       headers: { Accept: 'application/vnd.github+json' },
     });
-    if (!res.ok) return [];
+    if (!res.ok) return fallbackProjects;
     const repos = await res.json();
 
     return repos
@@ -54,10 +74,9 @@ export async function fetchGithubProjects(): Promise<Project[]> {
       .sort((a: any, b: any) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime())
       .map((r: any) => {
         const override = projectOverrides[r.name];
-        const slug = override?.name ?? r.name.toLowerCase();
         return {
-          slug,
-          name: slug,
+          slug: override?.slug ?? r.name.toLowerCase(),
+          name: override?.name ?? r.name,
           description: override?.description ?? r.description ?? 'no description yet',
           status: override?.status ?? 'active',
           href: r.html_url as string,
@@ -66,7 +85,7 @@ export async function fetchGithubProjects(): Promise<Project[]> {
         };
       });
   } catch {
-    return [];
+    return fallbackProjects;
   }
 }
 

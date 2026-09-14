@@ -3,6 +3,9 @@ site/node_modules/
 site/dist/
 site/.astro/
 
+# Source doc for the resume — only the exported PDF (site/public/resume.pdf) is published.
+Rahat_Ahsan_Resume.docx
+
 # Held back from the repo until ready to publish.
 # Remove this line and commit README.md when it's ready to go public.
 README.md

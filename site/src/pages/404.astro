@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 — Rahat Ahsan</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      const storedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    </script>
+  </head>
+  <body>
+    <div class="not-found-page">
+      <div class="not-found-box">
+        <div class="pwd-line">&gt; cd {Astro.url.pathname}</div>
+        <p class="not-found-message">command not found: no route matches this path</p>
+        <a href="/" class="readme-back">&larr; cd ~</a>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  .not-found-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .not-found-box {
+    border: 1px solid var(--rule-2);
+    background: var(--surface);
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 480px;
+    width: 100%;
+  }
+  .not-found-message {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 13px;
+  }
+</style>

@@ -5,15 +5,44 @@
 :root {
   --paper: oklch(97% 0.006 95);
   --paper-2: oklch(94% 0.008 95);
+  --surface: oklch(99% 0.004 95);
   --ink: oklch(20% 0.01 95);
   --ink-2: oklch(45% 0.02 95);
   --ink-3: oklch(55% 0.02 95);
   --rule: oklch(84% 0.01 95);
   --rule-2: oklch(80% 0.02 95);
   --accent: oklch(40% 0.13 150);
+  --accent-strong: oklch(30% 0.13 150);
+  --accent-hover: oklch(25% 0.13 150);
+  --accent-soft: oklch(70% 0.03 150);
   --accent-active-bg: oklch(90% 0.05 150);
   --accent-active-ink: oklch(32% 0.13 150);
+  --shadow: oklch(20% 0.01 95 / 0.08);
   color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --paper: oklch(18% 0.01 95);
+  --paper-2: oklch(22% 0.012 95);
+  --surface: oklch(24% 0.012 95);
+  --ink: oklch(92% 0.01 95);
+  --ink-2: oklch(72% 0.02 95);
+  --ink-3: oklch(62% 0.02 95);
+  --rule: oklch(32% 0.01 95);
+  --rule-2: oklch(38% 0.02 95);
+  --accent: oklch(72% 0.15 150);
+  --accent-strong: oklch(78% 0.15 150);
+  --accent-hover: oklch(82% 0.15 150);
+  --accent-soft: oklch(45% 0.05 150);
+  --accent-active-bg: oklch(28% 0.06 150);
+  --accent-active-ink: oklch(85% 0.1 150);
+  --shadow: oklch(0% 0 0 / 0.4);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] body::before {
+  mix-blend-mode: overlay;
+  opacity: 0.05;
 }
 
 * {
@@ -46,12 +75,19 @@ body::before {
   background-size: 180px 180px;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 a {
   color: var(--accent);
   text-decoration: none;
 }
 a:hover {
-  color: oklch(25% 0.13 150);
+  color: var(--accent-hover);
   text-decoration: underline;
 }
 
@@ -65,9 +101,9 @@ a:hover {
 }
 @keyframes cycleTitle {
   0% { opacity: 0; }
-  4% { opacity: 1; }
-  21% { opacity: 1; }
-  25% { opacity: 0; }
+  3% { opacity: 1; }
+  17% { opacity: 1; }
+  20% { opacity: 0; }
   100% { opacity: 0; }
 }
 @keyframes cycleStatus {
@@ -104,10 +140,10 @@ a:hover {
   flex-shrink: 0;
   background: var(--paper-2);
   border-right: 1px solid var(--rule);
-  padding: 22px 0;
+  padding: 26px 0;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 30px;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -124,22 +160,68 @@ a:hover {
   min-width: 0;
 }
 
+/* ---- sidebar: terminal window chrome ----------------------------------- */
+/* Signals "top of the pane" the way a terminal window's title bar does —
+   without it the sidebar just starts mid-content, like you scrolled past
+   the top already. */
+
+.terminal-chrome {
+  padding: 0 20px 18px;
+  margin-top: -6px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+@keyframes typeBootLine1 {
+  from { width: 0; }
+  to { width: 16ch; }
+}
+@keyframes typeBootLine2 {
+  from { width: 0; }
+  to { width: 22ch; }
+}
+.boot-line {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+.boot-line-1 {
+  animation: typeBootLine1 1s steps(16, end) 0.3s forwards;
+}
+.boot-line-2 {
+  animation: typeBootLine2 1.3s steps(22, end) 1.3s forwards;
+}
+
 /* ---- sidebar: status rotator ------------------------------------------ */
 
 .status-block {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 9px;
 }
 .status-label {
   color: var(--ink-3);
-  font-size: 11px;
+  font-size: 12px;
+}
+/* Visually reads as the command's output — indented and rail-connected to
+   the "$ echo $STATUS" line above, like a shell tree rather than two
+   unrelated lines of equal weight. */
+.status-output {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+  padding-left: 14px;
+  border-left: 2px solid var(--rule-2);
 }
 .status-cycle {
   position: relative;
-  height: 1.2em;
-  width: 230px;
+  height: 1.3em;
+  width: 100%;
 }
 .status-cycle span {
   position: absolute;
@@ -149,13 +231,28 @@ a:hover {
   white-space: nowrap;
   animation: cycleStatus 8s ease-in-out infinite;
   color: var(--accent);
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 700;
 }
 .status-cycle span:nth-child(1) { animation-delay: 0s; }
 .status-cycle span:nth-child(2) { animation-delay: 4s; }
 .status-static {
   color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+.status-location {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.status-location-label {
+  color: var(--ink-3);
   font-size: 11px;
+}
+.status-location-value {
+  color: var(--ink);
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -196,7 +293,7 @@ a:hover {
 }
 .nav-item {
   display: block;
-  padding: 6px 10px;
+  padding: 9px 10px;
   font-size: 13px;
   white-space: nowrap;
   cursor: pointer;
@@ -224,7 +321,7 @@ a:hover {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 /* ---- sidebar: command prompt --------------------------------------------- */
@@ -234,7 +331,7 @@ a:hover {
   padding: 0 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 /* ---- main: header ------------------------------------------------------- */
@@ -248,7 +345,7 @@ a:hover {
   animation: riseIn 0.5s ease-out both;
 }
 .header-name {
-  color: oklch(30% 0.13 150);
+  color: var(--accent-strong);
   font-size: 32px;
   font-weight: 700;
 }
@@ -263,14 +360,15 @@ a:hover {
   top: 0;
   opacity: 0;
   white-space: nowrap;
-  animation: cycleTitle 8s ease-in-out infinite;
-  color: oklch(35% 0.03 95);
+  animation: cycleTitle 10s ease-in-out infinite;
+  color: var(--ink-2);
   font-size: 16px;
 }
 .title-cycle span:nth-child(1) { animation-delay: 0s; }
 .title-cycle span:nth-child(2) { animation-delay: 2s; }
 .title-cycle span:nth-child(3) { animation-delay: 4s; }
 .title-cycle span:nth-child(4) { animation-delay: 6s; }
+.title-cycle span:nth-child(5) { animation-delay: 8s; }
 
 .header-status-row {
   display: flex;
@@ -292,6 +390,62 @@ a:hover {
   border: 1px solid var(--accent);
   padding: 4px 10px;
   flex-shrink: 0;
+}
+
+/* ---- header: skill badges ------------------------------------------------ */
+
+.skill-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--rule-2);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 11px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.skill-badge svg {
+  flex-shrink: 0;
+}
+.skill-badge:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---- main: impact stats strip --------------------------------------------- */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  animation: riseIn 0.5s ease-out both;
+  animation-delay: 0.05s;
+}
+.stat-tile {
+  border: 1px solid var(--rule-2);
+  background: var(--surface);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat-value {
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent-strong);
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--ink-2);
+  line-height: 1.4;
 }
 
 .section-label {
@@ -349,7 +503,7 @@ a:hover {
   height: 170px;
   margin: 0 26px 14px 4px;
   border: 1px solid var(--rule-2);
-  background: oklch(99% 0.004 95);
+  background: var(--surface);
   overflow: hidden;
 }
 .about-photo-frame img {
@@ -387,14 +541,14 @@ a:hover {
   padding-bottom: 10px;
 }
 .scroller::-webkit-scrollbar { height: 6px; }
-.scroller::-webkit-scrollbar-thumb { background: oklch(75% 0.02 95); }
+.scroller::-webkit-scrollbar-thumb { background: var(--rule-2); }
 .pcard {
   position: relative;
   flex-shrink: 0;
   width: 250px;
   scroll-snap-align: start;
   border: 1px solid var(--rule-2);
-  background: oklch(99% 0.004 95);
+  background: var(--surface);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -404,7 +558,7 @@ a:hover {
 .pcard:hover {
   border-color: var(--accent);
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px oklch(20% 0.01 95 / 0.08);
+  box-shadow: 0 8px 20px var(--shadow);
 }
 .pcard:hover .pcard-title {
   color: var(--accent);
@@ -487,13 +641,14 @@ a:hover {
   font-size: 13px;
   font-weight: 700;
 }
-.blog-date {
+.blog-meta {
   color: var(--ink-3);
   font-size: 11px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .blog-excerpt {
-  color: oklch(50% 0.02 95);
+  color: var(--ink-2);
   font-size: 12px;
   padding-left: 16px;
 }
@@ -523,13 +678,13 @@ a:hover {
 }
 .skill-name {
   color: var(--ink);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
 }
 .skill-context {
   color: var(--ink-2);
-  font-size: 11px;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.5;
 }
 .skill-projects {
   display: flex;
@@ -539,7 +694,7 @@ a:hover {
 }
 .skill-project-link {
   color: var(--accent);
-  font-size: 10px;
+  font-size: 12px;
 }
 .skill-project-link::before {
   content: '▸ ';
@@ -592,17 +747,18 @@ a:hover {
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
+  margin-top: 12px;
   border-top: 1px solid var(--rule);
-  padding-top: 16px;
+  padding-top: 32px;
   font-size: 12px;
   color: var(--ink-2);
 }
 .prompt-box {
   display: flex;
   align-items: center;
-  border: 1px solid oklch(70% 0.03 150);
-  background: oklch(99% 0.004 95);
+  border: 1px solid var(--accent-soft);
+  background: var(--surface);
   padding: 6px 8px;
 }
 .prompt-box input {
@@ -616,8 +772,21 @@ a:hover {
   font-size: 12px;
   padding: 0;
 }
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 .contact-links {
   flex-shrink: 0;
+}
+.contact-links-label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 8px;
 }
 .contact-links a {
   color: var(--ink-2);
@@ -627,6 +796,34 @@ a:hover {
   color: var(--accent);
   text-decoration: underline;
 }
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid var(--accent-soft);
+  padding: 12px 20px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.cta-link:hover {
+  background: var(--accent-active-bg);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.terminal-signoff {
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.signoff-message {
+  color: var(--ink-3);
+  font-size: 11px;
+}
 .contact-sep {
   margin: 0 4px;
 }
@@ -635,24 +832,31 @@ a:hover {
   font-size: 10px;
 }
 .command-hint {
-  color: oklch(60% 0.015 95);
+  color: var(--ink-3);
   font-size: 10px;
 }
 
 /* ---- chat launcher ---------------------------------------------------------- */
 
-.chat-launcher {
+.chat-launcher,
+.theme-toggle {
   position: fixed;
   right: 28px;
-  bottom: 28px;
   width: 56px;
   height: 56px;
   border: 1px solid var(--accent);
-  background: oklch(99% 0.004 95);
+  background: var(--surface);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+.chat-launcher {
+  bottom: 28px;
+}
+.theme-toggle {
+  bottom: 96px;
 }
 .chat-launcher-dot {
   position: absolute;
@@ -662,6 +866,15 @@ a:hover {
   height: 8px;
   background: var(--accent);
   animation: pulse 2s ease-in-out infinite;
+}
+.theme-toggle .icon-sun {
+  display: none;
+}
+:root[data-theme='dark'] .theme-toggle .icon-moon {
+  display: none;
+}
+:root[data-theme='dark'] .theme-toggle .icon-sun {
+  display: block;
 }
 
 /* ---- project readme page ---------------------------------------------------- */
@@ -825,11 +1038,16 @@ a:hover {
   .status-cycle {
     width: 100%;
   }
-  .contact-links {
+  .footer-row {
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
   .skill-grid {
     grid-template-columns: 1fr;
+  }
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
   }
   .about-photo-frame {
     float: none;
