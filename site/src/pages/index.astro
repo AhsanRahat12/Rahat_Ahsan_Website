@@ -466,7 +466,12 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
               {socialLinks.map((link, i) => (
                 <>
                   {i > 0 && <span class="contact-sep">&middot;</span>}
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">[{link.label}]</a>
+                  <a class="contact-link-item" href={link.href} target="_blank" rel="noopener noreferrer">
+                    [{link.label}]
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d={socialIcons[link.label]}></path>
+                    </svg>
+                  </a>
                 </>
               ))}
             </div>
@@ -486,6 +491,8 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
             <div class="status-label">$ logout</div>
             <div class="signoff-message">session ended — thanks for stopping by.</div>
           </div>
+
+          <button class="back-to-top" id="back-to-top">&uarr; back to top</button>
         </div>
       </main>
     </div>
@@ -564,14 +571,20 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
 
       let active = 'about';
 
-      function setActive(id: string) {
-        active = id;
-        pwdEl.textContent = id;
+      // `id` is null once scrolled past the last section into the footer —
+      // nothing in the nav should read as "active" at that point, but `active`/
+      // pwd stay frozen on whatever section was last real (like a shell that
+      // doesn't change directory just because you scrolled off the bottom).
+      function setActive(id: string | null) {
+        if (id) {
+          active = id;
+          pwdEl.textContent = id;
+        }
         navButtons.forEach((btn) => {
-          btn.classList.toggle('active', btn.dataset.section === id);
+          btn.classList.toggle('active', id !== null && btn.dataset.section === id);
         });
         document.querySelectorAll<HTMLElement>('.content-section').forEach((section) => {
-          const isActive = section.id === id;
+          const isActive = id !== null && section.id === id;
           section.classList.toggle('dimmed', !isActive);
           section.querySelector('.section-label')?.classList.toggle('active', isActive);
         });
@@ -595,13 +608,20 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
       // IntersectionObserver bands — bands need enough scroll room *past* a
       // section to register it, which breaks for a short last section (e.g.
       // experience) with little page left below it to scroll into.
-      function currentSectionFromScroll(): string {
+      function currentSectionFromScroll(): string | null {
         // A section is "current" once its top has scrolled up to this line. Using
         // the viewport midpoint (rather than a line near the top) keeps the buffer
         // of extra scroll room needed *after* the last section small — a line near
         // the top would need far more page height below the last section than a
         // short trailing footer actually provides.
         const threshold = window.innerHeight * 0.5;
+        // The footer is short enough that its own top never reaches the
+        // threshold line even at max scroll, so "in the footer" is checked
+        // directly as "scrolled to the bottom of the page" instead — the
+        // footer being the last element on the page makes those equivalent.
+        const scrolledToBottom =
+          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+        if (scrolledToBottom) return null;
         let current = sections[0];
         for (const id of sections) {
           const el = document.getElementById(id);
@@ -690,6 +710,10 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           document.documentElement.setAttribute('data-theme', 'dark');
           localStorage.setItem('theme', 'dark');
         }
+      });
+
+      document.getElementById('back-to-top')!.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
       // ---- Boot sequence intro (experimental) --------------------------------
