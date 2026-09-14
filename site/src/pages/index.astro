@@ -11,7 +11,7 @@ const siteDescription =
   'Systems / DevOps / Cloud Engineer — Kubernetes, GitOps, and CI/CD. Production infrastructure, write-ups, and experience.';
 
 const roles = ['Systems Engineer', 'Site Reliability Engineer', 'Platform Engineer', 'DevOps Engineer', 'Cloud Engineer'];
-const statusMessages = ['remote / hybrid / in-person', 'open to relocation'];
+const statusMessages = ['remote / hybrid / on-prem', 'open to relocation'];
 
 // Monochrome brand marks (Simple Icons, single-color use) for a quick tech-stack scan.
 const skillBadges = [
@@ -242,6 +242,10 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
     </script>
   </head>
   <body>
+    <div class="boot-overlay" id="boot-overlay">
+      <div class="boot-log" id="boot-log"></div>
+    </div>
+
     <div class="shell">
       <aside class="sidebar">
         <div class="terminal-chrome">
@@ -296,6 +300,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
             />
           </div>
           <div class="command-error" id="cmd-error" hidden></div>
+          <div class="command-output" id="cmd-output" hidden></div>
           <div class="command-hint">
             type a command, try "cd About" or "cd Projects/{projects[0]?.name ?? 'Homelab'}" — Tab to autocomplete
           </div>
@@ -332,7 +337,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
 
         <div class="stats-row">
           {impactStats.map((stat) => (
-            <div class="stat-tile">
+            <div class="stat-tile reveal">
               <span class="stat-value">{stat.value}</span>
               <span class="stat-label">{stat.label}</span>
             </div>
@@ -358,7 +363,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           ) : (
             <div class="scroller">
               {projects.map((p) => (
-                <div class="pcard">
+                <div class="pcard reveal">
                   <a href={`/projects/${p.slug}`} class="pcard-stretched-link" aria-label={`View ${p.name} details`}></a>
                   <div class="pcard-title-row">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke: var(--accent)" stroke-width="2">
@@ -393,7 +398,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
               <p class="blog-empty">no posts yet — will pull from Medium once connected</p>
             ) : (
               blogPosts.map((post) => (
-                <a class="blog-entry" href={post.link} target="_blank" rel="noopener noreferrer">
+                <a class="blog-entry reveal" href={post.link} target="_blank" rel="noopener noreferrer">
                   <div class="blog-title-row">
                     <span class="blog-title">{post.title}</span>
                     <span class="blog-meta">{post.date} · {post.readTime}</span>
@@ -411,7 +416,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
 
           <div class="skill-grid">
             {skills.map((s) => (
-              <div class="skill-item">
+              <div class="skill-item reveal">
                 <span class="skill-name">{s.name}</span>
                 <span class="skill-context">{s.context}</span>
                 <div class="skill-projects">
@@ -436,7 +441,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           <p class="section-intro">{certificationsIntro}</p>
           <div class="cert-roadmap">
             {certifications.map((c) => (
-              <div class="cert-entry">
+              <div class="cert-entry reveal">
                 <div class="cert-entry-row">
                   <span class="cert-entry-name">{c.name}</span>
                   <span class="cert-entry-status">[{c.status}]</span>
@@ -509,6 +514,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
       const pwdEl = document.getElementById('pwd')!;
       const input = document.getElementById('cmd-input') as HTMLInputElement;
       const errorEl = document.getElementById('cmd-error')!;
+      const outputEl = document.getElementById('cmd-output')!;
       const projectEntries: { slug: string; name: string }[] = JSON.parse(input.dataset.projects ?? '[]');
 
       // Properly-cased commands for Tab-completion — matching is case-insensitive,
@@ -563,6 +569,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           section.querySelector('.section-label')?.classList.toggle('active', isActive);
         });
         errorEl.hidden = true;
+        outputEl.hidden = true;
       }
 
       function goTo(id: string) {
@@ -626,17 +633,30 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         if (raw === '') return;
         const cmd = raw.replace(/^cd\s+/, '').replace(/^projects\//, '');
         resetCycle();
+        errorEl.hidden = true;
+        outputEl.hidden = true;
         const projectMatch = projectEntries.find((p) => p.name.toLowerCase() === cmd);
+
         if (sections.includes(cmd)) {
           goTo(cmd);
-          input.value = '';
         } else if (projectMatch) {
           window.location.href = `/projects/${projectMatch.slug}`;
+        } else if (cmd.startsWith('sudo')) {
+          errorEl.textContent = 'permission denied: nice try.';
+          errorEl.hidden = false;
+        } else if (cmd === 'whoami') {
+          outputEl.textContent = 'guest — but you should hire rahat.';
+          outputEl.hidden = false;
+        } else if (cmd === 'help') {
+          outputEl.textContent = 'hidden commands: sudo · whoami · clear';
+          outputEl.hidden = false;
+        } else if (cmd === 'clear') {
+          // no-op beyond the reset already done above
         } else {
           errorEl.textContent = `command not found: ${raw}`;
           errorEl.hidden = false;
-          input.value = '';
         }
+        input.value = '';
       });
 
       window.addEventListener('keydown', (e) => {
@@ -664,6 +684,106 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
           localStorage.setItem('theme', 'dark');
         }
       });
+
+      // ---- Boot sequence intro (experimental) --------------------------------
+      // Plays once per tab session on first load. Any click/keypress fast-forwards
+      // it. Skipped entirely under reduced-motion or on repeat visits this session.
+      const bootOverlay = document.getElementById('boot-overlay')!;
+      const bootLog = document.getElementById('boot-log')!;
+      const bootLines = [
+        'booting rahat-ahsan.dev',
+        'mounting /home/about',
+        'starting kubernetes.service',
+        'starting gitops.service (flux)',
+        'starting observability.service (prometheus + grafana)',
+        'starting coffee.service',
+      ];
+
+      function renderBootLine(text: string, cls: string) {
+        const div = document.createElement('div');
+        div.className = cls;
+        div.textContent = text;
+        bootLog.appendChild(div);
+      }
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const alreadyBooted = sessionStorage.getItem('bootPlayed') === 'true';
+
+      if (alreadyBooted || prefersReducedMotion) {
+        bootOverlay.hidden = true;
+      } else {
+        let bootIndex = 0;
+        let bootFinished = false;
+        let bootTimer: ReturnType<typeof setTimeout> | undefined;
+
+        function finishBoot() {
+          if (bootFinished) return;
+          bootFinished = true;
+          if (bootTimer) clearTimeout(bootTimer);
+          bootOverlay.classList.add('boot-done');
+          sessionStorage.setItem('bootPlayed', 'true');
+          setTimeout(() => {
+            bootOverlay.hidden = true;
+          }, 450);
+        }
+
+        function playNextBootLine() {
+          if (bootIndex >= bootLines.length) {
+            renderBootLine('system ready. welcome.', 'boot-line-final');
+            bootTimer = setTimeout(finishBoot, 500);
+            return;
+          }
+          renderBootLine(bootLines[bootIndex], 'boot-line-ok');
+          bootIndex++;
+          bootTimer = setTimeout(playNextBootLine, 220);
+        }
+
+        function skipBoot() {
+          if (bootFinished) return;
+          if (bootTimer) clearTimeout(bootTimer);
+          bootLog.innerHTML = '';
+          while (bootIndex < bootLines.length) {
+            renderBootLine(bootLines[bootIndex], 'boot-line-ok');
+            bootIndex++;
+          }
+          renderBootLine('system ready. welcome.', 'boot-line-final');
+          finishBoot();
+        }
+
+        bootOverlay.addEventListener('click', skipBoot, { once: true });
+        window.addEventListener('keydown', skipBoot, { once: true });
+        playNextBootLine();
+      }
+
+      // ---- Scroll reveal for cards --------------------------------------------
+      // Staggers by position within its own parent so a row of cards fans in
+      // left-to-right / top-to-bottom instead of popping in all at once.
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const target = entry.target as HTMLElement;
+            const siblings = Array.from(target.parentElement?.children ?? []);
+            const position = siblings.indexOf(target);
+            target.style.animationDelay = `${Math.max(0, position) * 70}ms`;
+            target.classList.add('revealed');
+            // Strip the reveal classes entirely once the entrance animation
+            // finishes, so nothing is left competing with the element's own
+            // `:hover` rules for the `transform` property.
+            target.addEventListener(
+              'animationend',
+              () => {
+                target.classList.remove('reveal', 'revealed');
+                target.style.animationDelay = '';
+              },
+              { once: true }
+            );
+            revealObserver.unobserve(target);
+          });
+        },
+        { threshold: 0.15 }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
     </script>
   </body>
 </html>
