@@ -54,11 +54,11 @@ const skillBadges = [
 ];
 
 const navItems = [
-  { id: 'about', label: '$ cd About' },
-  { id: 'projects', label: '$ cd Projects' },
-  { id: 'blog', label: '$ cd Blog' },
-  { id: 'experience', label: '$ cd Experience' },
-  { id: 'certifications', label: '$ cd Certifications' },
+  { id: 'about', label: '1. About' },
+  { id: 'projects', label: '2. Projects' },
+  { id: 'blog', label: '3. Blog' },
+  { id: 'experience', label: '4. Stack' },
+  { id: 'certifications', label: '5. Certifications' },
 ];
 
 const projects = await fetchGithubProjects();
@@ -77,28 +77,13 @@ const impactStats = [
 const projectsIntro = "Infrastructure I've designed, deployed, and still operate in production.";
 const blogIntro = 'Field notes from building and running the systems above.';
 const experienceIntro = "Skills built through hands-on infrastructure work, and where each one's in use.";
-const certificationsIntro = 'AWS in progress — Kubernetes certs next.';
+const certificationsIntro = 'AWS in progress.';
 
 const certifications = [
   {
     name: 'AWS Solutions Architect Associate (SAA)',
     status: 'in progress',
     description: 'Designing available, cost-efficient, fault-tolerant architectures on AWS.',
-  },
-  {
-    name: 'CKA — Certified Kubernetes Administrator',
-    status: 'planned next',
-    description: 'Cluster installation, configuration, and troubleshooting — the operator-facing Kubernetes cert.',
-  },
-  {
-    name: 'CKAD — Certified Kubernetes Application Developer',
-    status: 'planned',
-    description: 'Designing, building, and deploying applications for Kubernetes.',
-  },
-  {
-    name: 'CKS — Certified Kubernetes Security Specialist',
-    status: 'planned',
-    description: 'Securing container-based applications and Kubernetes clusters in production.',
   },
 ];
 
@@ -128,7 +113,11 @@ const skills = [
     context: 'Prometheus + Grafana, alerting on Slack and Telegram',
     links: [project('home_lab'), project('cloud_lab')],
   },
-  { name: 'Databases', context: 'HA Postgres; SQL + Power Query day-to-day', links: [project('home_lab')] },
+  {
+    name: 'Databases',
+    context: 'HA Postgres; SQL + Power Query day-to-day',
+    links: [project('home_lab'), project('cloud_lab')],
+  },
   {
     name: 'Linux',
     context: 'daily driver on Arch Linux + Hyprland; cluster administration',
@@ -167,8 +156,10 @@ const socialIcons: Record<string, string> = {
 };
 
 const aboutParagraphs = [
-  `I spend my days as a Data Analyst turning raw production data — timelines, budgets, salary structures for 500+ employees — into decisions people actually act on. That same instinct for turning raw signal into action pulled me into infrastructure: I've built and run Kubernetes clusters on bare metal and in the cloud, with full observability and alerting that catches problems before they become outages. I've replaced manual deployments with GitOps, wired up CI/CD pipelines with testing and vulnerability scanning baked in, and I write up my production incidents publicly.`,
-  `That curiosity didn't come from one place. Environmental Science was my undergrad — physics, chemistry, biology, geology, statistics pulling together — and it's where I first learned how things work together as systems. Day to day, I work with databases and Power Query, automating manual processes wherever I can. It was that combination — systems thinking on one side, the itch to automate on the other — that really sparked my curiosity, and I've been building up my skills to make the jump ever since. With help from KubeCraft, a DevOps mentorship community, I taught myself Kubernetes, Docker, CI/CD, Python, and Linux. Now I'm looking for roles where I get to work hands-on with cloud infrastructure and Kubernetes at scale.`,
+  `I spend my days as a Data Analyst leading cost and budget tracking at Green World Fashions, turning raw production data — timelines, budgets, salary structures for 500+ employees — into decisions people actually act on. I've also done contract financial reporting and cost-analysis work that directly helped secure federal government funding.`,
+  `That same instinct for turning raw signal into action pulled me into infrastructure. I've built and run Kubernetes clusters on bare metal and in the cloud, with full observability and alerting that catches problems before they become outages. I've replaced manual deployments with GitOps, wired up CI/CD pipelines with testing and vulnerability scanning baked in, and I write up my production incidents publicly.`,
+  `That curiosity didn't come from one place. Environmental Science was my undergrad — physics, chemistry, biology, geology, statistics pulling together — and it's where I first learned how things work together as systems. Day to day, I work with databases and Power Query, automating manual processes wherever I can.`,
+  `It was that combination — systems thinking on one side, the itch to automate on the other — that really sparked my curiosity, and I've been building up my skills to make the jump ever since. With help from KubeCraft, a DevOps mentorship community, I taught myself Kubernetes, Docker, CI/CD, Python, and Linux. Now I'm looking for roles where I get to work hands-on with cloud infrastructure and Kubernetes at scale.`,
   `When I'm not at the desk learning, I'm usually outside enjoying the sun or reading philosophy.`,
 ];
 
@@ -418,7 +409,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         </section>
 
         <section id="experience" class="content-section">
-          <h2 class="section-label">Experience</h2>
+          <h2 class="section-label">Stack</h2>
           <p class="section-intro">{experienceIntro}</p>
 
           <div class="skill-grid">
@@ -482,7 +473,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
                   <path d="M4 5h16v14H4z"></path>
                   <path d="M4 6l8 7 8-7"></path>
                 </svg>
-                Open to new roles — say hello
+                Open to new roles
               </a>
             </div>
           </div>
@@ -521,7 +512,7 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
         about: 'About',
         projects: 'Projects',
         blog: 'Blog',
-        experience: 'Experience',
+        experience: 'Stack',
         certifications: 'Certifications',
       };
       const navButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.nav-item'));
