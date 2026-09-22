@@ -1,7 +1,7 @@
 ---
 import '../../styles/global.css';
 import { marked } from 'marked';
-import { fetchGithubProjects, fetchProjectReadme, rewriteRelativeLinks } from '../../lib/github';
+import { fetchGithubProjects, fetchProjectReadme, rewriteRelativeLinks, sanitizeReadmeHtml } from '../../lib/github';
 import type { Project } from '../../lib/github';
 
 export async function getStaticPaths() {
@@ -10,7 +10,9 @@ export async function getStaticPaths() {
   return Promise.all(
     projects.map(async (project) => {
       const rawReadme = await fetchProjectReadme(project.repo);
-      const readmeHtml = rawReadme ? marked.parse(rewriteRelativeLinks(rawReadme, project.repo, project.branch)) : null;
+      const readmeHtml = rawReadme
+        ? sanitizeReadmeHtml(marked.parse(rewriteRelativeLinks(rawReadme, project.repo, project.branch)) as string)
+        : null;
       return {
         params: { slug: project.slug },
         props: { project, readmeHtml },

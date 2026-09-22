@@ -2,6 +2,8 @@
 // executes this during `astro build` (and per-request in `astro dev`), so there's
 // no client-side call, no CORS issue, and it fits a static S3 deploy.
 
+import sanitizeHtml from 'sanitize-html';
+
 export type Project = {
   slug: string;
   name: string;
@@ -119,4 +121,20 @@ export function rewriteRelativeLinks(markdown: string, repo: string, branch: str
   });
 
   return out;
+}
+
+// README HTML renders unescaped via set:html on the project detail page —
+// sanitize even though today's source repos are our own, since the fetch is
+// keyed off a GitHub topic tag rather than a hardcoded allowlist.
+export function sanitizeReadmeHtml(html: string): string {
+  return sanitizeHtml(html, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2', 'video', 'details', 'summary']),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      img: ['src', 'alt', 'title', 'width', 'height'],
+      a: ['href', 'name', 'target', 'rel'],
+      '*': ['id', 'class', 'align'],
+    },
+    allowedSchemes: ['http', 'https', 'mailto'],
+  });
 }
