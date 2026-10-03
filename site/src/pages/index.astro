@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { fetchGithubProjects } from '../lib/github';
+import SqlHero from '../components/SqlHero.astro';
 
 // Real design port from design/MainLight.dc.html (Terminal/CLI, light mode), first pass.
 // Still open (see README.md "Open items"): resume PDF.
@@ -306,6 +307,8 @@ const blogPosts = await fetchMediumPosts('@s.rahatahsan', 3);
       </aside>
 
       <main class="main">
+        <SqlHero />
+
         <div class="header-box">
           <div class="header-name">&gt;_ {name}</div>
           <div class="title-cycle">
