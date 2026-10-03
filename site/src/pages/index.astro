@@ -1,10 +1,172 @@
 ---
+import '../styles/global.css';
+import { profile } from '../data/profile';
+import { categories, tools } from '../data/tools';
+import { projects } from '../data/projects';
+import { socialLinks } from '../data/social';
+
+const toolGroups = categories
+  .map((category) => ({ category, items: tools.filter((t) => t.category === category) }))
+  .filter((group) => group.items.length > 0);
+
+const placeholderCount = 3;
+const socialLabel = (label: string) => label.charAt(0) + label.slice(1).toLowerCase();
+const [firstName, ...restName] = profile.name.split(' ');
+const lastName = restName.join(' ');
 ---
-<html lang="en">
+
+<!doctype html>
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Rahat Ahsan</title>
+    <title>{profile.name} — {profile.title}</title>
+    <meta name="description" content={profile.intro} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Apply the saved theme before first paint so the page doesn't flash. Light is the default. -->
+    <script is:inline>
+      try {
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch (e) {}
+    </script>
   </head>
-  <body></body>
+  <body>
+    <header class="wrap">
+      <nav class="nav">
+        <a class="monogram" href="#top" aria-label="Back to top">RA</a>
+        <div class="nav-links">
+          <a href="#tools">Tools</a>
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <button class="theme-btn" id="theme-toggle" type="button" aria-label="Switch to dark mode">Dark</button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap">
+          <div class="mono">{profile.title} — {profile.location}</div>
+          <div class="ghost" aria-hidden="true">Data</div>
+          <h1 class="display"><span class="w">{firstName}</span> <em class="w">{lastName}</em></h1>
+          <p class="lede">{profile.intro}</p>
+          <div class="hero-actions">
+            <a class="btn solid" href="#work">View work</a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="tools" id="tools">
+        <div class="wrap">
+          {toolGroups.map((group) => (
+            <div class="tools-group">
+              <div class="tools-group-label">{group.category}</div>
+              <div class="tools-row">
+                {group.items.map((tool) => (
+                  <div class="tool">
+                    <div class="tool-name">{tool.name}</div>
+                    <div class="tool-area">{tool.area}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div class="wrap">
+        <section class="section" id="work">
+          <div class="mono">Selected work</div>
+          <h2 class="display">Projects{projects.length === 0 && <em> in progress</em>}</h2>
+          <div class="cards">
+            {projects.length > 0
+              ? projects.map((project, i) => (
+                  <a class="card" href={project.href ?? '#work'}>
+                    <div class="card-num">{String(i + 1).padStart(2, '0')}</div>
+                    <div>
+                      <h3 class="card-title">{project.title}</h3>
+                      <p class="card-meta">{project.summary}</p>
+                      <p class="card-tools">{project.tools.join(' · ')}</p>
+                      <p class="card-meta card-status">{project.status}</p>
+                    </div>
+                  </a>
+                ))
+              : Array.from({ length: placeholderCount }, (_, i) => (
+                  <article class="card">
+                    <div class="card-num">{String(i + 1).padStart(2, '0')}</div>
+                    <div>
+                      <h3 class="card-title">Project title</h3>
+                      <p class="card-meta">One line on the problem. Tools used. The outcome, in one sentence.</p>
+                    </div>
+                  </article>
+                ))}
+          </div>
+        </section>
+
+        <section class="about" id="about">
+          <div>
+            <div class="mono">About</div>
+            <img class="about-photo" style="margin-top: 20px;" src="/images/portrait.jpg" alt={profile.name} width="480" height="354" />
+          </div>
+          <div class="about-text">
+            {profile.bio.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+            <dl class="facts">
+              {profile.facts.map((fact) => (
+                <div>
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+
+        <section class="contact" id="contact">
+          <div class="mono">Contact</div>
+          <a class="display big" href={`mailto:${profile.email}`}>Let&rsquo;s talk data.</a>
+          <div class="socials">
+            {socialLinks.map((link) => (
+              <a href={link.href} target="_blank" rel="noopener noreferrer">{socialLabel(link.label)}</a>
+            ))}
+          </div>
+        </section>
+
+        <footer class="foot">
+          <span>{profile.name}</span>
+          <span>{profile.location}</span>
+        </footer>
+      </div>
+    </main>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const btn = document.getElementById('theme-toggle');
+        if (!btn) return;
+        const apply = (theme) => {
+          root.dataset.theme = theme;
+          const next = theme === 'dark' ? 'Light' : 'Dark';
+          btn.textContent = next;
+          btn.setAttribute('aria-label', `Switch to ${next.toLowerCase()} mode`);
+        };
+        apply(root.dataset.theme === 'dark' ? 'dark' : 'light');
+        btn.addEventListener('click', () => {
+          const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+          apply(theme);
+          try {
+            localStorage.setItem('theme', theme);
+          } catch (e) {}
+        });
+      })();
+    </script>
+  </body>
 </html>
