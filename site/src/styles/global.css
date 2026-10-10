@@ -210,7 +210,21 @@ a.card { color: inherit; }
 .socials { display: flex; gap: 28px; margin-top: 56px; font-size: 15px; color: var(--muted); flex-wrap: wrap; }
 .socials a { display: inline-flex; align-items: center; gap: 10px; transition: color 0.25s ease; }
 .icon { width: 20px; height: 20px; flex: none; }
-.big-icon { width: 0.55em; height: 0.55em; margin-left: 0.15em; vertical-align: 0.04em; }
+.mail-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.62em;
+  height: 0.62em;
+  margin-left: 0.18em;
+  vertical-align: 0.06em;
+  border: 2px solid var(--amber);
+  border-radius: 50%;
+  color: var(--amber);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.mail-badge svg { width: 46%; height: 46%; }
+.contact .big:hover .mail-badge { background: var(--amber); color: var(--on-amber); transform: translateX(6px) rotate(-8deg); }
 
 .foot {
   padding: 24px 0;
