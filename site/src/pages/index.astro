@@ -162,7 +162,7 @@ const lastName = restName.join(' ');
           <p class="lede">{homelab.intro}</p>
           <div class="roles">
             {homelab.projects.map((p) => (
-              <a class="role lab" href={`/homelab/${p.slug}`} target="_blank" rel="noopener noreferrer">
+              <a class="role lab" href={`/homelab/${p.slug}`}>
                 <h3 class="role-title">{p.name}</h3>
                 <p class="lab-detail">{p.detail}</p>
               </a>
