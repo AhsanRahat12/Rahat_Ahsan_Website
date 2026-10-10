@@ -14,6 +14,7 @@ export const profile = {
   bio: [
     'I studied Environmental Science as an undergrad in Canada, and spent my degree around data without realising it: lab measurements, spreadsheets, statistics in R. Somewhere in there I fell in love with the analysis itself, and switched my career to data.',
     'Three years on, I work in SQL, Python, R, Power BI and Excel, with AWS and Azure on the cloud side. Most of what I do is turn raw numbers into cost models, dashboards and reports that managers and funders can act on.',
+    "Outside work, I'm an avid homelabber. I run a Raspberry Pi Kubernetes cluster at home that hosts the apps I use every day.",
   ],
   education: {
     degree: 'BSc Environmental Science',
@@ -25,7 +26,7 @@ export const profile = {
     { label: 'Location', value: 'Manitoba, Canada' },
     { label: 'Role', value: 'Data, Operations, BI and Financial Analyst' },
     { label: 'Status', value: 'Canadian Permanent Resident, open to relocate' },
-    { label: 'Fun fact', value: 'I run my own homelab: a Raspberry Pi Kubernetes cluster at home hosting the apps I use every day', href: '#homelab' },
+    { label: 'Fun fact', value: "I'm an avid homelabber", href: '#homelab' },
     { label: 'Open to', value: 'Remote, hybrid, or on-site analytics roles' },
   ],
 };
