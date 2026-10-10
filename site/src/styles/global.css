@@ -313,3 +313,5 @@ body { overflow-x: clip; }
 /* Rotating role word in the hero */
 .role-word { display: inline-block; color: var(--amber); transition: opacity 0.35s ease, transform 0.35s ease; }
 .role-word.out { opacity: 0; transform: translateY(-6px); }
+
+.foot-link { color: var(--amber); border-bottom: 1px solid currentColor; }
