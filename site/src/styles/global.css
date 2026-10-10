@@ -275,7 +275,8 @@ img { display: block; max-width: 100%; }
 .diagram { margin: 48px 0 0; padding: 24px; background: #fff; border: 1px solid var(--line); overflow-x: auto; }
 .diagram img { display: block; width: 100%; height: auto; min-width: 640px; }
 .diagram.tall img { width: auto; max-width: 100%; max-height: 900px; min-width: 0; margin: 0 auto; }
-.doc { margin-top: 56px; max-width: 820px; font-size: 17px; line-height: 1.7; color: var(--text-2); }
+.doc { margin-top: 56px; font-size: 18px; line-height: 1.7; color: var(--text-2); }
+.doc > p, .doc > ul, .doc > ol, .doc > blockquote { max-width: 980px; }
 .doc h1 { display: none; }
 .doc h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 34px; color: var(--text); margin: 56px 0 16px; }
 .doc h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 24px; color: var(--text); margin: 36px 0 12px; }
@@ -314,8 +315,10 @@ body { overflow-x: clip; }
 .role-word { display: inline-block; color: var(--amber); transition: opacity 0.35s ease, transform 0.35s ease; }
 .role-word.out { opacity: 0; transform: translateY(-6px); }
 
-/* One-line tool stack under a project's title */
-.stack-line { margin-top: 40px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 100px 1fr; gap: 20px; align-items: baseline; }
-.stack-label { color: var(--muted); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
-.stack-names { font-family: 'Fraunces', serif; font-size: 22px; line-height: 1.5; }
-@media (max-width: 780px) { .stack-line { grid-template-columns: 1fr; gap: 6px; } }
+/* Tool stack under a project's title: small chips */
+.stack-line { margin-top: 40px; display: grid; grid-template-columns: 70px 1fr; gap: 16px; align-items: start; }
+.stack-label { color: var(--muted); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding-top: 7px; }
+.stack-names { display: flex; flex-wrap: wrap; gap: 8px; }
+.stack-chip { border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; font-size: 13.5px; line-height: 1.4; color: var(--text-2); transition: border-color 0.2s ease, color 0.2s ease; }
+.stack-chip:hover { border-color: var(--amber); color: var(--amber); }
+@media (max-width: 780px) { .stack-line { grid-template-columns: 1fr; gap: 8px; } .stack-label { padding-top: 0; } }

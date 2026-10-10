@@ -25,6 +25,9 @@ let body = markdown
   .join('\n');
 // A local diagram replaces the README's Mermaid code, so drop those blocks from the body.
 if (localDiagram) body = body.replace(/```mermaid[\s\S]*?```/g, '');
+// Removing the diagram can leave a heading with nothing under it; drop it, and any doubled rule.
+body = body.replace(/^## [^\n]*\n(?:[ \t]*\n)*(?=---|## |(?![\s\S]))/gm, '').replace(/(^---[ \t]*\n\s*){2,}/gm, '---\n\n');
+
 // Pull the README's "Stack" table out of the body and show its tool names as one line instead.
 let stackTools: string[] = [];
 const stackSection = body.match(/^## [^\n]*Stack[^\n]*\n([\s\S]*?)(?=\n---|\n## |(?![\s\S]))/m);
@@ -96,12 +99,7 @@ const hasMermaid = html.includes('class="mermaid"');
         <div class="stack-line">
           <span class="stack-label">Stack</span>
           <span class="stack-names">
-            {stackTools.map((tool, i) => (
-              <>
-                {i > 0 && <span class="tools-dot" aria-hidden="true">·</span>}
-                <span>{tool}</span>
-              </>
-            ))}
+            {stackTools.map((tool) => <span class="stack-chip">{tool}</span>)}
           </span>
         </div>
       )}
