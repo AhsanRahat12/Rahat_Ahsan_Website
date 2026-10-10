@@ -138,12 +138,17 @@ const lastName = restName.join(' ');
           <div class="cards stack">
             {projects.length > 0
               ? projects.map((project, i) => {
-                  const Tag = project.href ? 'a' : 'article';
+                  const link = project.repo && project.slug ? `/projects/${project.slug}` : project.href;
+                  const picture = project.image
+                    ?? (project.diagram && project.repo
+                      ? `https://raw.githubusercontent.com/${githubUser}/${project.repo}/HEAD/${project.diagram}`
+                      : undefined);
+                  const Tag = link ? 'a' : 'article';
                   return (
-                    <Tag class="card" href={project.href}>
+                    <Tag class="card" href={link}>
                       <div class="card-img">
-                        {project.image
-                          ? <img src={project.image} alt={project.title} loading="lazy" />
+                        {picture
+                          ? <img src={picture} alt={project.title} loading="lazy" />
                           : <span class="card-num">{String(i + 1).padStart(2, '0')}</span>}
                       </div>
                       <h3 class="card-title">{project.title}</h3>

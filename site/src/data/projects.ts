@@ -7,10 +7,14 @@
 //     tools: ['SQL', 'Power BI'],          // names from tools.ts
 //     status: 'complete',                  // or 'in progress'
 //     image: '/images/projects/sales.jpg', // optional, file in site/public/images/projects/
-//     href: 'https://github.com/...',      // optional link for the whole row
+//     href: 'https://example.com',         // optional link for the whole card
+//     // To give it its own page (README, diagram and tool stack pulled from GitHub), add:
+//     slug: 'sales-dashboard',             // page lives at /projects/sales-dashboard
+//     repo: 'Sales_Dashboard',             // repo name under github.com/AhsanRahat12
+//     diagram: 'architecture.svg',         // optional image file in the repo root, shown on the card and page
 //   }
 //
-// Projects show as cards, three across on desktop, and extra ones add new rows below.
+// Projects show as stacked cards, and each one adds a row below.
 // While the list is empty, the page shows placeholder cards.
 
 export interface Project {
@@ -20,6 +24,9 @@ export interface Project {
   status: 'in progress' | 'complete';
   image?: string;
   href?: string;
+  slug?: string;
+  repo?: string;
+  diagram?: string;
 }
 
 // Short line shown under the Projects heading.

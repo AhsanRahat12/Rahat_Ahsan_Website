@@ -1,0 +1,18 @@
+---
+import ProjectPage from '../../components/ProjectPage.astro';
+import { projects } from '../../data/projects';
+
+// Only projects that name a GitHub `repo` get a page; the rest stay as plain cards.
+export function getStaticPaths() {
+  return projects
+    .filter((p) => p.repo && p.slug)
+    .map((p) => ({
+      params: { slug: p.slug },
+      props: { project: { name: p.title, detail: p.summary, repo: p.repo!, diagram: p.diagram ?? null } },
+    }));
+}
+
+const { project } = Astro.props;
+---
+
+<ProjectPage project={project} kicker="Project" backHref="/#work" />
