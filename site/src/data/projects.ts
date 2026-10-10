@@ -1,12 +1,23 @@
-// Projects shown in the Work section.
-// Add an entry as each project is finished. Until then the page shows placeholder cards.
-// `tools` should match `name` values in tools.ts so they stay consistent.
+// Projects shown in the Work section. To add one, add an object to the array below:
+// that is all. The section grows with the list, in the order given.
+//
+//   {
+//     title: 'Sales dashboard',
+//     summary: 'One line on the problem, and one on the outcome.',
+//     tools: ['SQL', 'Power BI'],          // names from tools.ts
+//     status: 'complete',                  // or 'in progress'
+//     image: '/images/projects/sales.jpg', // optional, file in site/public/images/projects/
+//     href: 'https://github.com/...',      // optional link for the whole row
+//   }
+//
+// While the list is empty, the page shows placeholder rows.
 
 export interface Project {
   title: string;
   summary: string;
   tools: string[];
   status: 'in progress' | 'complete';
+  image?: string;
   href?: string;
 }
 

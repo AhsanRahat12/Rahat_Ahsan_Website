@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import { profile } from '../data/profile';
 import { categories, tools } from '../data/tools';
-import { homelab } from '../data/homelab';
+import { homelab, githubUser } from '../data/homelab';
 import { experience } from '../data/experience';
 import { projects } from '../data/projects';
 import { socialLinks, socialIcons } from '../data/social';
@@ -134,25 +134,29 @@ const lastName = restName.join(' ');
         <section class="section" id="work">
           <div class="mono">Selected work</div>
           <h2 class="display">Projects{projects.length === 0 && <em> in progress</em>}</h2>
-          <div class="cards">
+          <div class="roles">
             {projects.length > 0
-              ? projects.map((project, i) => (
-                  <a class="card" href={project.href ?? '#work'}>
-                    <div class="card-num">{String(i + 1).padStart(2, '0')}</div>
+              ? projects.map((project) => {
+                  const Tag = project.href ? 'a' : 'article';
+                  return (
+                    <Tag class="role project" href={project.href}>
+                      <div class="project-img">
+                        {project.image && <img src={project.image} alt={project.title} loading="lazy" />}
+                      </div>
+                      <div>
+                        <h3 class="role-title">{project.title}</h3>
+                        <p class="role-story">{project.summary}</p>
+                        <p class="project-meta">{project.tools.join(' · ')} — {project.status}</p>
+                      </div>
+                    </Tag>
+                  );
+                })
+              : Array.from({ length: placeholderCount }, () => (
+                  <article class="role project">
+                    <div class="project-img"></div>
                     <div>
-                      <h3 class="card-title">{project.title}</h3>
-                      <p class="card-meta">{project.summary}</p>
-                      <p class="card-tools">{project.tools.join(' · ')}</p>
-                      <p class="card-meta card-status">{project.status}</p>
-                    </div>
-                  </a>
-                ))
-              : Array.from({ length: placeholderCount }, (_, i) => (
-                  <article class="card">
-                    <div class="card-num">{String(i + 1).padStart(2, '0')}</div>
-                    <div>
-                      <h3 class="card-title">Project title</h3>
-                      <p class="card-meta">One line on the problem. Tools used. The outcome, in one sentence.</p>
+                      <h3 class="role-title">Project title</h3>
+                      <p class="role-story">One line on the problem. Tools used. The outcome, in one sentence.</p>
                     </div>
                   </article>
                 ))}
@@ -163,11 +167,16 @@ const lastName = restName.join(' ');
           <div class="mono">Homelab</div>
           <h2 class="display">Off <em>the clock</em></h2>
           <p class="lede">{homelab.intro}</p>
-          <div class="roles">
-            {homelab.projects.map((p) => (
-              <a class="role lab" href={`/homelab/${p.slug}`}>
-                <h3 class="role-title">{p.name}</h3>
-                <p class="lab-detail">{p.detail}</p>
+          <div class="cards">
+            {homelab.projects.map((p, i) => (
+              <a class="card" href={`/homelab/${p.slug}`}>
+                <div class="card-img">
+                  {p.diagram
+                    ? <img src={`https://raw.githubusercontent.com/${githubUser}/${p.repo}/HEAD/${p.diagram}`} alt={`${p.name} architecture diagram`} loading="lazy" />
+                    : <span class="card-num">{String(i + 1).padStart(2, '0')}</span>}
+                </div>
+                <h3 class="card-title">{p.name}</h3>
+                <p class="card-meta">{p.detail}</p>
               </a>
             ))}
           </div>

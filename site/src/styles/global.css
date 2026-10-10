@@ -146,7 +146,7 @@ img { display: block; max-width: 100%; }
 .section h2 { font-size: 56px; margin: 16px 0 48px; line-height: 1.05; font-weight: 400; }
 .section h2 em { color: var(--amber); }
 
-/* Roles (also used by the homelab rows) */
+/* Rows (Experience and Projects) */
 .roles { border-top: 1px solid var(--line); }
 .role { display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 32px 0; border-bottom: 1px solid var(--line); }
 .role-dates { color: var(--muted); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 8px; }
@@ -155,31 +155,33 @@ img { display: block; max-width: 100%; }
 .roles .role:last-child { border-bottom: none; }
 .role-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; margin: 0 0 4px; }
 
-.lab { color: inherit; transition: background 0.25s ease; }
-.lab:hover { background: var(--ink-2); }
-.lab:hover .role-title { color: var(--amber); }
-.lab .role-title { margin: 0; transition: color 0.25s ease; }
-.lab-detail { margin: 0; color: var(--text-2); font-size: 16px; line-height: 1.6; }
 
-/* Projects */
-.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+/* Projects: list rows with a picture */
+.project { color: inherit; align-items: start; transition: background 0.25s ease; }
+a.project:hover { background: var(--ink-2); }
+a.project:hover .role-title { color: var(--amber); }
+.project .role-title { transition: color 0.25s ease; }
+.project-img { aspect-ratio: 4 / 3; background: var(--ink-2); border: 1px solid var(--line); overflow: hidden; }
+.project-img img { width: 100%; height: 100%; object-fit: cover; }
+.project-meta { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
+
+/* Homelab: cards with a picture */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .card {
-  border: 1px dashed var(--line);
-  padding: 28px;
-  min-height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  border: 1px solid var(--line);
+  padding: 20px 20px 28px;
+  color: inherit;
   transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
 }
 .card:hover { border-color: var(--amber); transform: translateY(-4px); background: var(--ink-2); }
-.card:hover .card-num { color: var(--amber); }
-.card-num { font-family: 'Fraunces', serif; font-size: 64px; color: var(--line); transition: color 0.25s ease; }
-.card-title { font-family: 'Fraunces', serif; font-size: 28px; margin: 0 0 10px; font-weight: 400; }
-.card-meta { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0; }
-.card-tools { margin-top: 14px; color: var(--muted); font-size: 13px; }
-.card-status { margin-top: 14px; }
-a.card { color: inherit; }
+.card:hover .card-title { color: var(--amber); }
+.card-img { aspect-ratio: 4 / 3; margin-bottom: 22px; background: #fff; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.card-img img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.card-num { font-family: 'Fraunces', serif; font-size: 64px; color: var(--line); }
+.card-title { font-family: 'Fraunces', serif; font-size: 28px; margin: 0 0 10px; font-weight: 400; transition: color 0.25s ease; }
+.card-meta { color: var(--muted); font-size: 15px; line-height: 1.55; margin: 0; }
 
 /* About */
 .about {
