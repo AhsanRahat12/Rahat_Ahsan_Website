@@ -14,7 +14,7 @@ export const experience: Role[] = [
     org: 'Green World Fashions Ltd. (Remote)',
     dates: 'Nov 2023 – Present',
     story:
-      'Using data to influence stakeholders at a 650-person textile operation, I automated manual report generation and sped up reporting by 20%. Management then acted on my analysis to divert investments, increasing cash flow by 8%. A data-backed headcount and production baseline improved margins per project and kept us compliant with amfori/BSCI standards.',
+      'Using data to influence stakeholders at a 650-person textile operation, I automated manual report generation and sped up reporting by 20%. I also influenced management to divert investments, increasing cash flow by 8%. A data-backed headcount and production baseline improved margins per project and kept us compliant with amfori/BSCI standards.',
   },
   {
     title: 'Financial Reporting & Cost Analysis Contractor',
