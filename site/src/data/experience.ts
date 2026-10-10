@@ -10,7 +10,7 @@ export interface Role {
 export const experience: Role[] = [
   {
     title: 'Data Analyst',
-    org: 'Green World Fashions Ltd. (Remote)',
+    org: 'Apparel manufacturer (Remote)',
     dates: 'Nov 2023 – Present',
     points: [
       'Used SQL and Python to analyze public bond data and internal production data, influencing management to invest in bonds and set a baseline production headcount, which increased cash flow and improved margins per project.',
