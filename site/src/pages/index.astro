@@ -134,7 +134,7 @@ const lastName = restName.join(' ');
         <section class="section" id="work">
           <div class="mono">Selected work</div>
           <h2 class="display">Projects{projects.length === 0 && <em> in progress</em>}</h2>
-          <div class="cards">
+          <div class="cards stack">
             {projects.length > 0
               ? projects.map((project, i) => {
                   const Tag = project.href ? 'a' : 'article';
