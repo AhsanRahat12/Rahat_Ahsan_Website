@@ -133,32 +133,13 @@ img { display: block; max-width: 100%; }
 
 /* Tools */
 .tools { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.tools-group { display: grid; grid-template-columns: 220px 1fr; border-bottom: 1px solid var(--line); }
+.tools-group { display: grid; grid-template-columns: 220px 1fr; align-items: baseline; gap: 20px; padding: 28px 0; border-bottom: 1px solid var(--line); }
 .tools-group:last-child { border-bottom: none; }
-.tools-group-label { padding: 28px 20px 28px 0; color: var(--muted); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
-.tools-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-.tool {
-  position: relative;
-  padding: 28px 20px;
-  border-left: 1px solid var(--line);
-  transition: background 0.25s ease;
-}
-.tool::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; top: 0;
-  height: 2px;
-  background: var(--amber);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
-}
-.tool:first-child { border-left: none; }
-.tool:hover { background: var(--ink-2); }
-.tool:hover::after { transform: scaleX(1); }
-.tool-name { font-family: 'Fraunces', serif; font-size: 26px; margin-bottom: 6px; transition: color 0.25s ease; }
-.tool:hover .tool-name { color: var(--amber); }
-.tool-area { color: var(--muted); font-size: 14px; }
+.tools-group-label { color: var(--muted); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+.tools-names { font-family: 'Fraunces', serif; font-size: 28px; line-height: 1.4; }
+.tools-name { transition: color 0.25s ease; }
+.tools-name:hover { color: var(--amber); }
+.tools-dot { color: var(--amber); margin: 0 0.45em; }
 
 /* Sections */
 .section { padding: 110px 0 40px; }
@@ -243,10 +224,8 @@ a.card { color: inherit; }
   .nav-links a { display: none; }
   .hero { padding: 80px 0 72px; }
   .ghost { font-size: 120px; top: 0; }
-  .tools-group { grid-template-columns: 1fr; }
-  .tools-group-label { padding: 24px 0 0; }
-  .tools-row { grid-template-columns: 1fr 1fr; }
-  .tool:nth-child(odd) { border-left: none; }
+  .tools-group { grid-template-columns: 1fr; gap: 8px; }
+  .tools-names { font-size: 24px; }
   .cards { grid-template-columns: 1fr; }
   .role { grid-template-columns: 1fr; gap: 8px; }
   .role-dates { padding-top: 0; }

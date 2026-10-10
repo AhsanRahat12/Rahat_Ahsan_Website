@@ -101,12 +101,12 @@ const lastName = restName.join(' ');
           {toolGroups.map((group) => (
             <div class="tools-group">
               <div class="tools-group-label">{group.category}</div>
-              <div class="tools-row">
-                {group.items.map((tool) => (
-                  <div class="tool">
-                    <div class="tool-name">{tool.name}</div>
-                    <div class="tool-area">{tool.area}</div>
-                  </div>
+              <div class="tools-names">
+                {group.items.map((tool, i) => (
+                  <>
+                    {i > 0 && <span class="tools-dot" aria-hidden="true">·</span>}
+                    <span class="tools-name">{tool.name}</span>
+                  </>
                 ))}
               </div>
             </div>
