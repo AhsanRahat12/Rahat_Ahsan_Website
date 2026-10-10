@@ -60,7 +60,8 @@ const lastName = restName.join(' ');
           <div class="mono">{profile.location} — <span class="role-word" id="role-word" data-roles={JSON.stringify(profile.roles)}>{profile.roles[0]}</span></div>
           <div class="ghost" aria-hidden="true">Data</div>
           <h1 class="display"><span class="w">{firstName}</span> <em class="w">{lastName}</em></h1>
-          <p class="lede">{profile.intro}</p>
+          <p class="tagline">{profile.intro}</p>
+          <p class="lede">{profile.greeting}</p>
           <div class="hero-actions">
             <a class="btn solid" href="#work">View work</a>
             <a class="btn" href="#contact">Get in touch</a>

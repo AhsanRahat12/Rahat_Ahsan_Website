@@ -7,7 +7,8 @@ export const profile = {
   roles: ['Data Analyst', 'Operations Analyst', 'Business Intelligence Analyst', 'Financial Analyst'],
   location: 'Manitoba, Canada',
   email: 's.rahatahsan@gmail.com',
-  intro: 'Clear data. Better decisions.',
+  intro: 'Cleaner data. Better decisions.',
+  greeting: "Hi, I'm Rahat. I help businesses get their data right and make decisions with confidence.",
   focus: 'Three years turning raw data into insight that makes operations more efficient and improves margins.',
   openTo: 'Open to remote, hybrid, or on-site analytics roles.',
   bio: [
