@@ -13,7 +13,7 @@ export const profile = {
   openTo: 'Open to remote, hybrid, or on-site analytics roles.',
   bio: [
     'I studied Environmental Science as an undergrad in Canada, and spent my degree around data without realising it: lab measurements, spreadsheets, statistics in R. Somewhere in there I fell in love with the analysis itself, and switched my career to data.',
-    'Three years on, I work in SQL, Python, R, Power BI and Excel, with AWS and Azure on the cloud side. Most of what I do is turn raw numbers into cost models, dashboards and reports that managers and funders can act on.',
+    'At my current role, I work in SQL, Python, R, Power BI and Excel, with AWS and Azure on the cloud side. Most of what I do is turn raw numbers into cost models, dashboards and reports that managers and funders can act on.',
     "Outside work, I'm an avid homelabber. I run a Raspberry Pi Kubernetes cluster at home that hosts the apps I use every day.",
   ],
   education: {
@@ -25,7 +25,6 @@ export const profile = {
   facts: [
     { label: 'Location', value: 'Based in Canada' },
     { label: 'Status', value: 'Canadian Permanent Resident, open to relocate' },
-    { label: 'Fun fact', value: "I'm an avid homelabber", href: '#homelab' },
     { label: 'Open to', value: 'Remote, hybrid, or on-site analytics roles' },
   ],
 };
