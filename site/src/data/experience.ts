@@ -14,7 +14,7 @@ export const experience: Role[] = [
     org: 'Textile manufacturer (Remote)',
     dates: 'Nov 2023 – Present',
     story:
-      'I brought operational and financial data into one place and automated the routine reporting, cutting report time by about 20%. From there, my analysis of public bond data improved cash flow by 8%, and a data-backed headcount baseline lowered costs and made projects run more efficiently. I also built forward-looking cost models and dashboards for management, and used production data to help meet amfori/BSCI standards.',
+      'I brought operational and financial data into one place and automated the routine reporting, cutting report time by about 20%. From there, I analysed public finance data to redirect investments and improve cash flow by 8%, and set a data-backed headcount baseline that lowered costs, made projects more efficient and raised project margins. I also built forward-looking cost models and dashboards for management, and used production data to help meet amfori/BSCI standards.',
   },
   {
     title: 'Financial Reporting & Cost Analysis Contractor',
