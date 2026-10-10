@@ -15,7 +15,8 @@ export const profile = {
   facts: [
     { label: 'Location', value: 'Brandon, Manitoba' },
     { label: 'Role', value: 'Data Analyst' },
-    { label: 'Education', value: 'BSc Environmental Science (Statistics), Brandon University, 2024' },
+    { label: 'Education', value: 'BSc Environmental Science, Statistics concentration, Brandon University (2024)' },
+    { label: 'Coursework', value: 'Statistics, Statistical Inference, Analytical Chemistry, GIS, Geomatics' },
     { label: 'Status', value: 'Canadian Permanent Resident' },
     { label: 'Fun fact', value: 'I run my own homelab: a Raspberry Pi Kubernetes cluster at home hosting the apps I use every day', href: '#homelab' },
     { label: 'Open to', value: 'Remote, hybrid, or on-site analytics roles' },
