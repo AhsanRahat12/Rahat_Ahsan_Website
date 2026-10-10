@@ -10,7 +10,8 @@
 //     href: 'https://github.com/...',      // optional link for the whole row
 //   }
 //
-// While the list is empty, the page shows placeholder rows.
+// Projects show as cards, three across on desktop, and extra ones add new rows below.
+// While the list is empty, the page shows placeholder cards.
 
 export interface Project {
   title: string;

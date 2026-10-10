@@ -134,30 +134,28 @@ const lastName = restName.join(' ');
         <section class="section" id="work">
           <div class="mono">Selected work</div>
           <h2 class="display">Projects{projects.length === 0 && <em> in progress</em>}</h2>
-          <div class="roles">
+          <div class="cards">
             {projects.length > 0
-              ? projects.map((project) => {
+              ? projects.map((project, i) => {
                   const Tag = project.href ? 'a' : 'article';
                   return (
-                    <Tag class="role project" href={project.href}>
-                      <div class="project-img">
-                        {project.image && <img src={project.image} alt={project.title} loading="lazy" />}
+                    <Tag class="card" href={project.href}>
+                      <div class="card-img">
+                        {project.image
+                          ? <img src={project.image} alt={project.title} loading="lazy" />
+                          : <span class="card-num">{String(i + 1).padStart(2, '0')}</span>}
                       </div>
-                      <div>
-                        <h3 class="role-title">{project.title}</h3>
-                        <p class="role-story">{project.summary}</p>
-                        <p class="project-meta">{project.tools.join(' · ')} — {project.status}</p>
-                      </div>
+                      <h3 class="card-title">{project.title}</h3>
+                      <p class="card-meta">{project.summary}</p>
+                      <p class="card-tags">{project.tools.join(' · ')} — {project.status}</p>
                     </Tag>
                   );
                 })
-              : Array.from({ length: placeholderCount }, () => (
-                  <article class="role project">
-                    <div class="project-img"></div>
-                    <div>
-                      <h3 class="role-title">Project title</h3>
-                      <p class="role-story">One line on the problem. Tools used. The outcome, in one sentence.</p>
-                    </div>
+              : Array.from({ length: placeholderCount }, (_, i) => (
+                  <article class="card">
+                    <div class="card-img"><span class="card-num">{String(i + 1).padStart(2, '0')}</span></div>
+                    <h3 class="card-title">Project title</h3>
+                    <p class="card-meta">One line on the problem. Tools used. The outcome, in one sentence.</p>
                   </article>
                 ))}
           </div>
