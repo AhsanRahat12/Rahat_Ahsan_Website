@@ -28,6 +28,6 @@ export const experience: Role[] = [
     org: 'Brandon University',
     dates: 'Apr 2022 – Aug 2022',
     story:
-      'I supported plant-science research by keeping the experimental data accurate and running further analysis in R.',
+      'Supporting plant-science research, I kept experimental data accurate and validated, and ran further analysis in R to support the findings.',
   },
 ];
