@@ -7,13 +7,13 @@ export const profile = {
   roles: ['Data Analyst', 'Operations Analyst', 'Business Intelligence Analyst', 'Financial Analyst'],
   location: 'Manitoba, Canada',
   email: 's.rahatahsan@gmail.com',
-  intro: 'Cleaner data. Better decisions.',
+  intro: 'Clear data. Better decisions.',
   greeting: "Hi, I'm Rahat. I help businesses get their data right and make decisions with confidence.",
   focus: 'Three years turning raw data into insight that makes operations more efficient and improves margins.',
   openTo: 'Open to remote, hybrid, or on-site analytics roles.',
   bio: [
     'I studied Environmental Science as an undergrad in Canada, and spent my degree around data without realising it: lab measurements, spreadsheets, statistics in R. Somewhere in there I fell in love with the analysis itself, and switched my career to data.',
-    'Three years on, I work in SQL, Python, R, Power BI and Excel, with AWS and Azure on the cloud side. Most of what I do is turn raw numbers into cost models, dashboards and reports that managers and funders can act on, and explain them to people who are not analysts.',
+    'Three years on, I work in SQL, Python, R, Power BI and Excel, with AWS and Azure on the cloud side. Most of what I do is turn raw numbers into cost models, dashboards and reports that managers and funders can act on.',
   ],
   education: {
     degree: 'BSc Environmental Science',
