@@ -211,6 +211,11 @@ a.card { color: inherit; }
 .about-photo { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top; filter: grayscale(0.2); transition: filter 0.4s ease; }
 .about-photo:hover { filter: none; }
 .about-text p { font-size: 20px; line-height: 1.7; color: var(--text-2); margin: 0 0 20px; }
+.edu { margin: 32px 0 0; padding: 22px 0 22px 22px; border-left: 2px solid var(--amber); }
+.edu-degree { font-family: 'Fraunces', serif; font-size: 26px; line-height: 1.25; }
+.edu-degree span { color: var(--amber); font-style: italic; }
+.edu-school { margin-top: 6px; color: var(--muted); font-size: 15px; }
+.edu-courses { margin-top: 12px; font-style: italic; color: var(--text-2); font-size: 16px; }
 .facts { margin: 36px 0 0; border-top: 1px solid var(--line); }
 .facts div { display: grid; grid-template-columns: 170px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
 .facts dt { color: var(--muted); }

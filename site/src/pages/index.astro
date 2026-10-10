@@ -78,6 +78,11 @@ const lastName = restName.join(' ');
             {profile.bio.map((paragraph) => (
               <p>{paragraph}</p>
             ))}
+            <div class="edu">
+              <div class="edu-degree">{profile.education.degree} <span>· {profile.education.focus}</span></div>
+              <div class="edu-school">{profile.education.school}</div>
+              <div class="edu-courses">{profile.education.courses.join(' · ')}</div>
+            </div>
             <dl class="facts">
               {profile.facts.map((fact) => (
                 <div>
