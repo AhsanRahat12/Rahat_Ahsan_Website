@@ -4,7 +4,7 @@ import { profile } from '../data/profile';
 import { categories, tools } from '../data/tools';
 import { homelab, githubUser } from '../data/homelab';
 import { experience } from '../data/experience';
-import { projects } from '../data/projects';
+import { projects, projectsIntro } from '../data/projects';
 import { socialLinks, socialIcons } from '../data/social';
 
 const toolGroups = categories
@@ -134,6 +134,7 @@ const lastName = restName.join(' ');
         <section class="section" id="work">
           <div class="mono">Selected work</div>
           <h2 class="display">Projects{projects.length === 0 && <em> in progress</em>}</h2>
+          <p class="lede">{projectsIntro}</p>
           <div class="cards stack">
             {projects.length > 0
               ? projects.map((project, i) => {
@@ -165,7 +166,7 @@ const lastName = restName.join(' ');
           <div class="mono">Homelab</div>
           <h2 class="display">Off <em>the clock</em></h2>
           <p class="lede">{homelab.intro}</p>
-          <div class="cards">
+          <div class="cards stack">
             {homelab.projects.map((p, i) => (
               <a class="card" href={`/homelab/${p.slug}`}>
                 <div class="card-img">

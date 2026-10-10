@@ -22,4 +22,8 @@ export interface Project {
   href?: string;
 }
 
+// Short line shown under the Projects heading.
+export const projectsIntro =
+  'Hands-on analysis projects: a real question, messy data, and what it showed. New ones are added as I finish them.';
+
 export const projects: Project[] = [];
