@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { profile } from '../data/profile';
 import { categories, tools } from '../data/tools';
 import { homelab } from '../data/homelab';
-import { impact } from '../data/impact';
+import { experience } from '../data/experience';
 import { projects } from '../data/projects';
 import { socialLinks } from '../data/social';
 
@@ -45,7 +45,7 @@ const lastName = restName.join(' ');
         <div class="nav-links">
           <a href="#about">About</a>
           <a href="#tools">Tools</a>
-          <a href="#impact">Impact</a>
+          <a href="#experience">Experience</a>
           <a href="#work">Work</a>
           <a href="#homelab">Homelab</a>
           <a href="#contact">Contact</a>
@@ -109,12 +109,20 @@ const lastName = restName.join(' ');
       </section>
 
       <div class="wrap">
-        <section class="section" id="impact">
-          <div class="mono">Impact</div>
-          <h2 class="display">What the data <em>changed</em></h2>
-          <div class="impact">
-            <p class="impact-story">{impact.story}</p>
-            <p class="impact-earlier">{impact.earlier}</p>
+        <section class="section" id="experience">
+          <div class="mono">Experience</div>
+          <h2 class="display">Where I&rsquo;ve <em>worked</em></h2>
+          <div class="roles">
+            {experience.map((role) => (
+              <article class="role">
+                <div class="role-dates">{role.dates}</div>
+                <div>
+                  <h3 class="role-title">{role.title}</h3>
+                  <p class="role-org">{role.org}</p>
+                  <p class="role-story">{role.story}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 

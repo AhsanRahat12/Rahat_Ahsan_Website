@@ -165,14 +165,12 @@ img { display: block; max-width: 100%; }
 .section h2 { font-size: 56px; margin: 16px 0 48px; line-height: 1.05; font-weight: 400; }
 .section h2 em { color: var(--amber); }
 
-/* Impact */
-.impact { max-width: 820px; }
-.impact-story { font-size: 22px; line-height: 1.7; color: var(--text-2); margin: 0 0 24px; }
-.impact-earlier { font-size: 15px; color: var(--muted); margin: 0; border-top: 1px solid var(--line); padding-top: 20px; }
-
 /* Roles (also used by the homelab rows) */
 .roles { border-top: 1px solid var(--line); }
 .role { display: grid; grid-template-columns: 220px 1fr; gap: 24px; padding: 32px 0; border-bottom: 1px solid var(--line); }
+.role-dates { color: var(--muted); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 8px; }
+.role-org { color: var(--amber); font-size: 15px; margin: 0 0 16px; }
+.role-story { margin: 0; color: var(--text-2); font-size: 18px; line-height: 1.7; max-width: 720px; }
 .role-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; margin: 0 0 4px; }
 
 .lab { color: inherit; transition: background 0.25s ease; }
@@ -248,6 +246,7 @@ a.card { color: inherit; }
   .tool:nth-child(odd) { border-left: none; }
   .cards { grid-template-columns: 1fr; }
   .role { grid-template-columns: 1fr; gap: 8px; }
+  .role-dates { padding-top: 0; }
   .section h2 { font-size: 44px; }
   .about { grid-template-columns: 1fr; gap: 28px; }
   .facts div { grid-template-columns: 1fr; gap: 2px; }
