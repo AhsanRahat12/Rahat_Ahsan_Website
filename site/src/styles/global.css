@@ -72,7 +72,6 @@ img { display: block; max-width: 100%; }
   justify-content: space-between;
   align-items: center;
   padding: 28px 0;
-  border-bottom: 1px solid var(--line);
 }
 .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--muted); align-items: center; }
 .monogram { font-family: 'Fraunces', serif; font-size: 22px; }
@@ -205,7 +204,6 @@ a.card { color: inherit; }
   grid-template-columns: 1fr 2fr;
   gap: 64px;
   padding: 110px 0;
-  border-top: 1px solid var(--line);
   margin-top: 110px;
 }
 .about-photo { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top; filter: grayscale(0.2); transition: filter 0.4s ease; }
@@ -230,7 +228,6 @@ a.card { color: inherit; }
 .socials { display: flex; gap: 24px; margin-top: 56px; font-size: 14px; color: var(--muted); flex-wrap: wrap; }
 
 .foot {
-  border-top: 1px solid var(--line);
   padding: 24px 0;
   display: flex;
   justify-content: space-between;
@@ -289,3 +286,19 @@ a.card { color: inherit; }
 .doc details { border: 1px solid var(--line); padding: 12px 18px; margin: 12px 0; }
 .doc summary { cursor: pointer; color: var(--text); }
 .doc-end { margin-top: 64px; }
+
+/* Full-width dividers: each segment gets a line running edge to edge of the page. */
+body { overflow-x: clip; }
+.nav, .about, .section, .contact, .foot { position: relative; }
+.nav::after, .about::before, .section::before, .contact::before, .foot::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  height: 1px;
+  background: var(--line);
+}
+.nav::after { bottom: 0; }
+.about::before, .section::before, .contact::before, .foot::before { top: 0; }
+.tools + .wrap .section:first-child::before { display: none; }
