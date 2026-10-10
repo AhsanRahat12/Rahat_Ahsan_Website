@@ -302,3 +302,7 @@ body { overflow-x: clip; }
 .nav::after { bottom: 0; }
 .about::before, .section::before, .contact::before, .foot::before { top: 0; }
 .tools + .wrap .section:first-child::before { display: none; }
+
+/* Rotating role word in the hero */
+.role-word { display: inline-block; color: var(--amber); transition: opacity 0.35s ease, transform 0.35s ease; }
+.role-word.out { opacity: 0; transform: translateY(-6px); }

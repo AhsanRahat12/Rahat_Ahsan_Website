@@ -3,7 +3,9 @@
 export const profile = {
   name: 'Rahat Ahsan',
   title: 'Data Analyst',
-  location: 'Brandon, Manitoba',
+  // The hero cycles through these; `title` above stays the page title and fallback.
+  roles: ['Data', 'Operations', 'Business Intelligence', 'Financial'],
+  location: 'Manitoba, Canada',
   email: 's.rahatahsan@gmail.com',
   intro: 'I turn messy operational data into decisions people can act on.',
   focus: 'Three years turning raw data into insight that makes operations more efficient and improves margins.',
@@ -19,9 +21,9 @@ export const profile = {
     courses: ['Statistics', 'Statistical Inference', 'Analytical Chemistry', 'GIS'],
   },
   facts: [
-    { label: 'Location', value: 'Brandon, Manitoba' },
-    { label: 'Role', value: 'Data Analyst' },
-    { label: 'Status', value: 'Canadian Permanent Resident' },
+    { label: 'Location', value: 'Manitoba, Canada' },
+    { label: 'Role', value: 'Data, Operations, BI and Financial Analyst' },
+    { label: 'Status', value: 'Canadian Permanent Resident, open to relocate' },
     { label: 'Fun fact', value: 'I run my own homelab: a Raspberry Pi Kubernetes cluster at home hosting the apps I use every day', href: '#homelab' },
     { label: 'Open to', value: 'Remote, hybrid, or on-site analytics roles' },
   ],
