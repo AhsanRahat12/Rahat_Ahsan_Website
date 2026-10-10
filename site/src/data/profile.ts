@@ -4,7 +4,7 @@ export const profile = {
   name: 'Rahat Ahsan',
   title: 'Data Analyst',
   // The hero cycles through these; `title` above stays the page title and fallback.
-  roles: ['Data', 'Operations', 'Business Intelligence', 'Financial'],
+  roles: ['Data Analyst', 'Operations Analyst', 'Business Intelligence Analyst', 'Financial Analyst'],
   location: 'Manitoba, Canada',
   email: 's.rahatahsan@gmail.com',
   intro: 'I turn messy operational data into decisions people can act on.',

@@ -57,7 +57,7 @@ const lastName = restName.join(' ');
     <main id="top">
       <section class="hero">
         <div class="wrap">
-          <div class="mono"><span class="role-word" id="role-word" data-roles={JSON.stringify(profile.roles)}>{profile.roles[0]}</span> Analyst — {profile.location}</div>
+          <div class="mono">{profile.location} — <span class="role-word" id="role-word" data-roles={JSON.stringify(profile.roles)}>{profile.roles[0]}</span></div>
           <div class="ghost" aria-hidden="true">Data</div>
           <h1 class="display"><span class="w">{firstName}</span> <em class="w">{lastName}</em></h1>
           <p class="lede">{profile.intro}</p>
@@ -204,7 +204,7 @@ const lastName = restName.join(' ');
             el.textContent = roles[i];
             el.classList.remove('out');
           }, 350);
-        }, 2600);
+        }, 4500);
       })();
     </script>
     <script is:inline>
