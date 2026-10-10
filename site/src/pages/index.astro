@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { profile } from '../data/profile';
 import { categories, tools } from '../data/tools';
+import { experience } from '../data/experience';
 import { projects } from '../data/projects';
 import { socialLinks } from '../data/social';
 
@@ -42,6 +43,7 @@ const lastName = restName.join(' ');
         <a class="monogram" href="#top" aria-label="Back to top">RA</a>
         <div class="nav-links">
           <a href="#tools">Tools</a>
+          <a href="#experience">Experience</a>
           <a href="#work">Work</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
@@ -83,6 +85,25 @@ const lastName = restName.join(' ');
       </section>
 
       <div class="wrap">
+        <section class="section" id="experience">
+          <div class="mono">Experience</div>
+          <h2 class="display">Where I&rsquo;ve <em>worked</em></h2>
+          <div class="roles">
+            {experience.map((role) => (
+              <article class="role">
+                <div class="role-dates">{role.dates}</div>
+                <div>
+                  <h3 class="role-title">{role.title}</h3>
+                  <p class="role-org">{role.org}</p>
+                  <ul class="role-points">
+                    {role.points.map((point) => <li>{point}</li>)}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section class="section" id="work">
           <div class="mono">Selected work</div>
           <h2 class="display">Projects{projects.length === 0 && <em> in progress</em>}</h2>

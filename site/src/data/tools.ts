@@ -14,9 +14,11 @@ export interface Tool {
 
 export const tools: Tool[] = [
   { name: 'SQL', area: 'Querying & modelling', category: 'Languages' },
+  { name: 'R', area: 'Statistical analysis', category: 'Languages' },
   { name: 'Python', area: 'Analysis & automation', category: 'Languages' },
-  { name: 'Excel', area: 'Budgeting & reporting', category: 'Analysis & BI' },
+  { name: 'Excel', area: 'Power Query, VBA, PivotTables', category: 'Analysis & BI' },
   { name: 'Power BI', area: 'Dashboards', category: 'Analysis & BI' },
-  { name: 'AWS', area: 'Cloud (SAA in progress)', category: 'Cloud' },
+  { name: 'AWS', area: 'S3, access controls (SAA in progress)', category: 'Cloud' },
   { name: 'Azure', area: 'Cloud', category: 'Cloud' },
+  { name: 'Postgres', area: 'Faster reporting queries', category: 'Data platforms' },
 ];
