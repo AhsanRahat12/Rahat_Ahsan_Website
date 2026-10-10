@@ -25,6 +25,20 @@ let body = markdown
   .join('\n');
 // A local diagram replaces the README's Mermaid code, so drop those blocks from the body.
 if (localDiagram) body = body.replace(/```mermaid[\s\S]*?```/g, '');
+// Pull the README's "Stack" table out of the body and show its tool names as one line instead.
+let stackTools: string[] = [];
+const stackSection = body.match(/^## [^\n]*Stack[^\n]*\n([\s\S]*?)(?=\n---|\n## |(?![\s\S]))/m);
+if (stackSection) {
+  const rows = stackSection[1].split('\n').filter((l) => l.trim().startsWith('|'));
+  const [header, , ...data] = rows;
+  const firstIsTool = /tool/i.test(header.split('|')[1] ?? '') && !/tools/i.test(header.split('|')[1] ?? '');
+  stackTools = data.flatMap((row) => {
+    const cells = row.split('|').slice(1, -1).map((c) => c.trim().replace(/`/g, ''));
+    return firstIsTool ? [cells[0]] : (cells[1] ?? '').split('·').map((t) => t.trim());
+  }).filter(Boolean);
+  if (stackTools.length) body = body.replace(stackSection[0], '');
+}
+
 const isRelative = (u: string) => !/^([a-z]+:|#|\/\/)/i.test(u);
 const toRaw = (u: string) => (isRelative(u) ? rawBase + u.replace(/^\.\//, '') : u);
 
@@ -77,6 +91,20 @@ const hasMermaid = html.includes('class="mermaid"');
       <div class="hero-actions">
         <a class="btn solid" href={repoUrl} target="_blank" rel="noopener noreferrer">View on GitHub</a>
       </div>
+
+      {stackTools.length > 0 && (
+        <div class="stack-line">
+          <span class="stack-label">Stack</span>
+          <span class="stack-names">
+            {stackTools.map((tool, i) => (
+              <>
+                {i > 0 && <span class="tools-dot" aria-hidden="true">·</span>}
+                <span>{tool}</span>
+              </>
+            ))}
+          </span>
+        </div>
+      )}
 
       {project.diagram && (
         <figure class={localDiagram ? 'diagram tall' : 'diagram'}>

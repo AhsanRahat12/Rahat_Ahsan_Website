@@ -313,3 +313,9 @@ body { overflow-x: clip; }
 /* Rotating role word in the hero */
 .role-word { display: inline-block; color: var(--amber); transition: opacity 0.35s ease, transform 0.35s ease; }
 .role-word.out { opacity: 0; transform: translateY(-6px); }
+
+/* One-line tool stack under a project's title */
+.stack-line { margin-top: 40px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 100px 1fr; gap: 20px; align-items: baseline; }
+.stack-label { color: var(--muted); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+.stack-names { font-family: 'Fraunces', serif; font-size: 22px; line-height: 1.5; }
+@media (max-width: 780px) { .stack-line { grid-template-columns: 1fr; gap: 6px; } }
