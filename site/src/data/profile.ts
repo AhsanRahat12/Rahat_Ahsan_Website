@@ -10,7 +10,7 @@ export const profile = {
   intro: 'Clear data. Better decisions.',
   greeting: "Hi, I'm Rahat. I help businesses get their data right and make decisions with confidence.",
   focus: 'Three years turning raw data into insight that makes operations more efficient and improves margins.',
-  openTo: 'Open to remote, hybrid, or on-site analytics roles.',
+  openTo: 'Open to analytics roles where I get to work hands-on with data.',
   bio: [
     'I studied Environmental Science as an undergrad in Canada, and spent my degree around data without realising it: lab measurements, spreadsheets, statistics in R. Somewhere in there I fell in love with the analysis itself, and switched my career to data.',
     'At my current role, I work in SQL, Python, R, Power BI and Excel, with AWS and Azure on the cloud side. Most of what I do is turn raw numbers into cost models, dashboards and reports that managers and funders can act on.',
@@ -24,7 +24,7 @@ export const profile = {
   },
   facts: [
     { label: 'Location', value: 'Based in Canada' },
-    { label: 'Status', value: 'Canadian Permanent Resident, open to relocate' },
-    { label: 'Open to', value: 'Remote, hybrid, or on-site analytics roles' },
+    { label: 'Status', value: 'Canadian Permanent Resident' },
+    { label: 'Open to', value: 'Analytics roles where I get to work hands-on with data' },
   ],
 };
