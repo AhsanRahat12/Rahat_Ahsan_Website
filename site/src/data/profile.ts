@@ -5,7 +5,7 @@ export const profile = {
   title: 'Data Analyst',
   // The hero cycles through these; `title` above stays the page title and fallback.
   roles: ['Data Analyst', 'Operations Analyst', 'Business Intelligence Analyst', 'Financial Analyst'],
-  location: 'Manitoba, Canada',
+  location: 'Based in Canada',
   email: 's.rahatahsan@gmail.com',
   intro: 'Clear data. Better decisions.',
   greeting: "Hi, I'm Rahat. I help businesses get their data right and make decisions with confidence.",
@@ -23,8 +23,7 @@ export const profile = {
     courses: ['Statistics', 'Statistical Inference', 'Analytical Chemistry', 'GIS'],
   },
   facts: [
-    { label: 'Location', value: 'Manitoba, Canada' },
-    { label: 'Role', value: 'Data, Operations, BI and Financial Analyst' },
+    { label: 'Location', value: 'Based in Canada' },
     { label: 'Status', value: 'Canadian Permanent Resident, open to relocate' },
     { label: 'Fun fact', value: "I'm an avid homelabber", href: '#homelab' },
     { label: 'Open to', value: 'Remote, hybrid, or on-site analytics roles' },
