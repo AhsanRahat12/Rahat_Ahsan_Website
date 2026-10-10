@@ -178,6 +178,9 @@ img { display: block; max-width: 100%; }
 .cards.stack .card-title { align-self: end; }
 .card-title { font-family: 'Fraunces', serif; font-size: 28px; margin: 0 0 10px; font-weight: 400; transition: color 0.25s ease; }
 .card-meta { color: var(--muted); font-size: 15px; line-height: 1.55; margin: 0; }
+.homelab-cards .card { padding: 14px 14px 22px; }
+.homelab-cards .card-title, .homelab-cards .card-meta { padding: 0 6px; }
+.homelab-cards .card-meta { font-size: 14.5px; line-height: 1.5; text-wrap: pretty; }
 .card-tags { color: var(--muted); font-size: 13px; margin: 14px 0 0; }
 .card:is(article) { cursor: default; }
 .card:is(article):hover { transform: none; background: transparent; border-color: var(--line); }
