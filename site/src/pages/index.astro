@@ -4,6 +4,7 @@ import { profile } from '../data/profile';
 import { categories, tools } from '../data/tools';
 import { homelab } from '../data/homelab';
 import { experience } from '../data/experience';
+import { education } from '../data/education';
 import { projects } from '../data/projects';
 import { socialLinks } from '../data/social';
 
@@ -123,6 +124,14 @@ const lastName = restName.join(' ');
                 </div>
               </article>
             ))}
+            <article class="role">
+              <div class="role-dates">Education</div>
+              <div>
+                <h3 class="role-title">{education.degree}</h3>
+                <p class="role-org">{education.school} · {education.year}</p>
+                <p class="role-story">Relevant coursework: {education.courses.join(', ')}</p>
+              </div>
+            </article>
           </div>
         </section>
 
