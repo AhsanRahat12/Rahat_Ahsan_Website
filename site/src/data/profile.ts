@@ -16,7 +16,7 @@ export const profile = {
     degree: 'BSc Environmental Science',
     focus: 'Statistics concentration',
     school: 'Brandon University, 2024',
-    courses: ['Statistics', 'Statistical Inference', 'Analytical Chemistry', 'GIS', 'Geomatics'],
+    courses: ['Statistics', 'Statistical Inference', 'Analytical Chemistry', 'GIS'],
   },
   facts: [
     { label: 'Location', value: 'Brandon, Manitoba' },
