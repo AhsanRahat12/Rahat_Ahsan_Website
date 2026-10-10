@@ -1,4 +1,6 @@
 // Homelab section: a short intro and the repos behind it.
+// Each project gets a page at /homelab/<slug> built from the repo's README (fetched at build time).
+// `diagram` is an image file in the repo root, shown above the README; null if the README embeds its own.
 
 export const homelab = {
   intro:
@@ -6,18 +8,26 @@ export const homelab = {
   projects: [
     {
       name: 'Homelab',
+      slug: 'homelab',
+      repo: 'Homelab',
+      diagram: 'HomeLab_Architecture.svg',
       detail: 'Raspberry Pi k3s cluster with GitOps, NAS-backed storage and Postgres, reachable over Tailscale and Cloudflare Tunnel.',
-      href: 'https://github.com/AhsanRahat12/Homelab',
     },
     {
       name: 'Study App',
+      slug: 'study-app',
+      repo: 'Study_App',
+      diagram: 'architecture.svg',
       detail: 'Tracks my study sessions and certifications. Self-hosted, with a CI/CD pipeline from commit to cluster.',
-      href: 'https://github.com/AhsanRahat12/Study_App',
     },
     {
       name: 'Cloudlab',
+      slug: 'cloudlab',
+      repo: 'Cloudlab',
+      diagram: null as string | null,
       detail: 'A multi-tenant platform on Azure Kubernetes built with Terraform and Flux, spun up on demand.',
-      href: 'https://github.com/AhsanRahat12/Cloudlab',
     },
   ],
 };
+
+export const githubUser = 'AhsanRahat12';

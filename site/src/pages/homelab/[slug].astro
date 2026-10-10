@@ -1,0 +1,100 @@
+---
+import '../../styles/global.css';
+import { marked } from 'marked';
+import { homelab, githubUser } from '../../data/homelab';
+import { profile } from '../../data/profile';
+
+export function getStaticPaths() {
+  return homelab.projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const rawBase = `https://raw.githubusercontent.com/${githubUser}/${project.repo}/HEAD/`;
+const repoUrl = `https://github.com/${githubUser}/${project.repo}`;
+
+const res = await fetch(`${rawBase}README.md`);
+if (!res.ok) throw new Error(`Could not fetch README for ${project.repo}: ${res.status}`);
+const markdown = await res.text();
+
+// Drop the diagram from the body (it is shown above) and point other relative images at GitHub.
+const body = markdown
+  .split('\n')
+  .filter((line) => !(project.diagram && line.includes(project.diagram)))
+  .join('\n');
+const isRelative = (u: string) => !/^([a-z]+:|#|\/\/)/i.test(u);
+const toRaw = (u: string) => (isRelative(u) ? rawBase + u.replace(/^\.\//, '') : u);
+
+let html = marked.parse(body, { async: false }) as string;
+html = html
+  .replace(/<img([^>]*?)src="([^"]+)"/g, (_m, pre, src) => `<img${pre}src="${toRaw(src)}"`)
+  .replace(/<a ([^>]*?)href="([^"]+)"/g, (_m, pre, href) => {
+    if (href.startsWith('#')) return `<a ${pre}href="${href}"`;
+    const url = isRelative(href) ? `${repoUrl}/blob/HEAD/${href.replace(/^\.\//, '')}` : href;
+    return `<a ${pre}href="${url}" target="_blank" rel="noopener noreferrer"`;
+  })
+  .replace(/<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g, '<pre class="mermaid">$1</pre>');
+const hasMermaid = html.includes('class="mermaid"');
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{project.name} — {profile.name}</title>
+    <meta name="description" content={project.detail} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      try {
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <header class="wrap">
+      <nav class="nav">
+        <a class="monogram" href="/" aria-label="Back to home">RA</a>
+        <div class="nav-links">
+          <a href="/#homelab">&larr; Back to site</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="wrap doc-page">
+      <div class="mono">Homelab project</div>
+      <h1 class="display doc-title">{project.name}</h1>
+      <p class="lede">{project.detail}</p>
+      <div class="hero-actions">
+        <a class="btn solid" href={repoUrl} target="_blank" rel="noopener noreferrer">View on GitHub</a>
+      </div>
+
+      {project.diagram && (
+        <figure class="diagram">
+          <img src={`${rawBase}${project.diagram}`} alt={`${project.name} architecture diagram`} />
+        </figure>
+      )}
+
+      <article class="doc" set:html={html} />
+
+      <div class="hero-actions doc-end">
+        <a class="btn solid" href={repoUrl} target="_blank" rel="noopener noreferrer">View on GitHub</a>
+        <a class="btn" href="/#homelab">Back to site</a>
+      </div>
+    </main>
+
+    {hasMermaid && (
+      <script is:inline type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        const dark = document.documentElement.dataset.theme === 'dark';
+        mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+        await mermaid.run({ querySelector: 'pre.mermaid' });
+      </script>
+    )}
+  </body>
+</html>
