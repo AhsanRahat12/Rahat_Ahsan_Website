@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { profile } from '../data/profile';
 import { categories, tools } from '../data/tools';
+import { homelab } from '../data/homelab';
 import { experience } from '../data/experience';
 import { projects } from '../data/projects';
 import { socialLinks } from '../data/social';
@@ -46,6 +47,7 @@ const lastName = restName.join(' ');
           <a href="#tools">Tools</a>
           <a href="#experience">Experience</a>
           <a href="#work">Work</a>
+          <a href="#homelab">Homelab</a>
           <a href="#contact">Contact</a>
           <button class="theme-btn" id="theme-toggle" type="button" aria-label="Switch to dark mode">Dark</button>
         </div>
@@ -151,6 +153,20 @@ const lastName = restName.join(' ');
                     </div>
                   </article>
                 ))}
+          </div>
+        </section>
+
+        <section class="section" id="homelab">
+          <div class="mono">Homelab</div>
+          <h2 class="display">Off <em>the clock</em></h2>
+          <p class="lede">{homelab.intro}</p>
+          <div class="roles">
+            {homelab.projects.map((p) => (
+              <a class="role lab" href={p.href} target="_blank" rel="noopener noreferrer">
+                <h3 class="role-title">{p.name}</h3>
+                <p class="lab-detail">{p.detail}</p>
+              </a>
+            ))}
           </div>
         </section>
 
