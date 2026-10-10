@@ -14,10 +14,10 @@ export const experience: Role[] = [
     dates: 'Nov 2023 – Present',
     points: [
       'Used data to bring operations and finances into line, increasing cash flow by 8%.',
-      'Set a data-backed baseline for headcount, helping the business run leaner and plan ahead with confidence.',
+      'Set a data-backed baseline for headcount, helping the business run leaner and increasing margins per project.',
       'Solved a data management problem by introducing AWS cloud storage and a Postgres database, giving the business one centralised, controlled source of data and much faster queries.',
-      'Automated reporting on top of it, improving efficiency and cutting manual work.',
-      'Built dashboards and a forward-looking cost model that turned trends into decisions for management.',
+      'Automated reporting on top of it, cutting the time it takes by about 15% and freeing time for forward-looking analysis.',
+      'Used the automated, centralised data to build a forward-looking cost model and dashboards that turned trends into decisions for management.',
     ],
   },
   {
