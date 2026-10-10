@@ -5,7 +5,7 @@ import { categories, tools } from '../data/tools';
 import { homelab } from '../data/homelab';
 import { experience } from '../data/experience';
 import { projects } from '../data/projects';
-import { socialLinks } from '../data/social';
+import { socialLinks, socialIcons } from '../data/social';
 
 const toolGroups = categories
   .map((category) => ({ category, items: tools.filter((t) => t.category === category) }))
@@ -176,17 +176,26 @@ const lastName = restName.join(' ');
 
         <section class="contact" id="contact">
           <div class="mono">Contact</div>
-          <a class="display big" href={`mailto:${profile.email}`}>Let&rsquo;s talk data.</a>
+          <a class="display big" href={`mailto:${profile.email}`}>
+            Let&rsquo;s talk data. <svg class="icon big-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg>
+          </a>
           <div class="socials">
+            <a href={`mailto:${profile.email}`}>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6.5L20.5 7"/></svg>
+              <span>Email</span>
+            </a>
             {socialLinks.map((link) => (
-              <a href={link.href} target="_blank" rel="noopener noreferrer">{socialLabel(link.label)}</a>
+              <a href={link.href} target="_blank" rel="noopener noreferrer">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={socialIcons[link.label]} /></svg>
+                <span>{socialLabel(link.label)}</span>
+              </a>
             ))}
           </div>
         </section>
 
         <footer class="foot">
           <span>{profile.name}</span>
-          <span>{profile.location}</span>
+          <a href="#top">Go back to top &uarr;</a>
         </footer>
       </div>
     </main>
