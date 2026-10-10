@@ -152,6 +152,7 @@ img { display: block; max-width: 100%; }
 .role-dates { color: var(--muted); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 8px; }
 .role-org { color: var(--amber); font-size: 15px; margin: 0 0 16px; }
 .role-story { margin: 0; color: var(--text-2); font-size: 18px; line-height: 1.7; max-width: 720px; }
+.roles .role:last-child { border-bottom: none; }
 .role-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; margin: 0 0 4px; }
 
 .lab { color: inherit; transition: background 0.25s ease; }
