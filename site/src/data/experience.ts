@@ -21,7 +21,7 @@ export const experience: Role[] = [
     org: 'OPCN, Manitoba',
     dates: 'Aug 2024',
     story:
-      'I prepared cost reporting for a federal post-secondary student support program, in the format the client required. All requested funding was approved.',
+      'I prepared cost reporting for a federal post-secondary student support program, in the format the client required. All requested funding was approved by the Federal Government.',
   },
   {
     title: 'Green House Assistant',
