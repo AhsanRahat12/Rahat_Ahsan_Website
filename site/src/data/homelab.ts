@@ -1,6 +1,7 @@
 // Homelab section: a short intro and the repos behind it.
 // Each project gets a page at /homelab/<slug> built from the repo's README (fetched at build time).
-// `diagram` is an image file in the repo root, shown above the README; null if the README embeds its own.
+// `diagram` is an image file in the repo root, shown above the README. A path starting with '/' is a
+// local file in site/public instead (Cloudlab's is a snapshot of the Mermaid diagram in its README).
 
 export const homelab = {
   intro:
@@ -24,7 +25,7 @@ export const homelab = {
       name: 'Cloudlab',
       slug: 'cloudlab',
       repo: 'Cloudlab',
-      diagram: null as string | null,
+      diagram: '/images/cloudlab-architecture.svg',
       detail: 'A multi-tenant platform on Azure Kubernetes built with Terraform and Flux, spun up on demand.',
     },
   ],

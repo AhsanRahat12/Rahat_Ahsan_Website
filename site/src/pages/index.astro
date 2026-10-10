@@ -171,7 +171,7 @@ const lastName = restName.join(' ');
               <a class="card" href={`/homelab/${p.slug}`}>
                 <div class="card-img">
                   {p.diagram
-                    ? <img src={`https://raw.githubusercontent.com/${githubUser}/${p.repo}/HEAD/${p.diagram}`} alt={`${p.name} architecture diagram`} loading="lazy" />
+                    ? <img src={p.diagram.startsWith('/') ? p.diagram : `https://raw.githubusercontent.com/${githubUser}/${p.repo}/HEAD/${p.diagram}`} alt={`${p.name} architecture diagram`} loading="lazy" />
                     : <span class="card-num">{String(i + 1).padStart(2, '0')}</span>}
                 </div>
                 <h3 class="card-title">{p.name}</h3>

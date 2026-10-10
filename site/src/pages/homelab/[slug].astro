@@ -17,10 +17,14 @@ if (!res.ok) throw new Error(`Could not fetch README for ${project.repo}: ${res.
 const markdown = await res.text();
 
 // Drop the diagram from the body (it is shown above) and point other relative images at GitHub.
-const body = markdown
+const localDiagram = Boolean(project.diagram?.startsWith('/'));
+const diagramSrc = project.diagram ? (localDiagram ? project.diagram : `${rawBase}${project.diagram}`) : null;
+let body = markdown
   .split('\n')
   .filter((line) => !(project.diagram && line.includes(project.diagram)))
   .join('\n');
+// A local diagram replaces the README's Mermaid code, so drop those blocks from the body.
+if (localDiagram) body = body.replace(/```mermaid[\s\S]*?```/g, '');
 const isRelative = (u: string) => !/^([a-z]+:|#|\/\/)/i.test(u);
 const toRaw = (u: string) => (isRelative(u) ? rawBase + u.replace(/^\.\//, '') : u);
 
@@ -75,8 +79,8 @@ const hasMermaid = html.includes('class="mermaid"');
       </div>
 
       {project.diagram && (
-        <figure class="diagram">
-          <img src={`${rawBase}${project.diagram}`} alt={`${project.name} architecture diagram`} />
+        <figure class={localDiagram ? 'diagram tall' : 'diagram'}>
+          <img src={diagramSrc} alt={`${project.name} architecture diagram`} />
         </figure>
       )}
 
