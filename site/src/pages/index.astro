@@ -82,7 +82,7 @@ const lastName = restName.join(' ');
               {profile.facts.map((fact) => (
                 <div>
                   <dt>{fact.label}</dt>
-                  <dd>{fact.value}</dd>
+                  <dd>{fact.href ? <a class="fact-link" href={fact.href}>{fact.value}</a> : fact.value}</dd>
                 </div>
               ))}
             </dl>
