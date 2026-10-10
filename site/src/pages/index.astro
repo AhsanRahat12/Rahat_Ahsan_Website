@@ -134,7 +134,7 @@ const lastName = restName.join(' ');
         <section class="section" id="work">
           <div class="mono">Selected work</div>
           <h2 class="display">Projects{projects.length === 0 && <em> in progress</em>}</h2>
-          <p class="lede">{projectsIntro}</p>
+          <p class="lede wide">{projectsIntro}</p>
           <div class="cards stack">
             {projects.length > 0
               ? projects.map((project, i) => {
@@ -165,7 +165,7 @@ const lastName = restName.join(' ');
         <section class="section" id="homelab">
           <div class="mono">Homelab</div>
           <h2 class="display">Off <em>the clock</em></h2>
-          <p class="lede">{homelab.intro}</p>
+          <p class="lede wide">{homelab.intro}</p>
           <div class="cards homelab-cards">
             {homelab.projects.map((p, i) => (
               <a class="card" href={`/homelab/${p.slug}`}>
